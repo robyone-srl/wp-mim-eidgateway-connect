@@ -1,0 +1,21 @@
+.R1EIDG-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 42px;
+    gap: 6px;
+}
+
+.R1EIDG-wrapper::before{
+    content: "oppure";
+    margin-bottom: 6px;
+}
+
+.R1EIDG-btn{
+    height: 48px;
+}
+
+.button-cie {
+    background-color: #0053a2;
+}
