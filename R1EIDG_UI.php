@@ -49,7 +49,7 @@ class R1EIDG_UI
     static function draw_login_button_from_shortcode($atts)
     {
         $atts = shortcode_atts([
-            'size' => R1EIDG_UI::BUTTON_SIZE_S,
+            'size' => R1EIDG_UI::BUTTON_SIZE_M,
         ], $atts);
 
         R1EIDG_UI::draw_login_button($atts['size']);

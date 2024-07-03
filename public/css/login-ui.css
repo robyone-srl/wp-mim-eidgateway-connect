@@ -1,17 +1,13 @@
 .R1EIDG-wrapper{
+    flex-direction: column;
     display: flex;
     align-items: center;
     width: 100%;
-    margin-top: 42px;
     gap: 6px;
 }
 
-.access-login .R1EIDG-wrapper{
-    flex-direction: row;
-}
-
 #loginform .R1EIDG-wrapper{
-    flex-direction: column;
+    margin-top: 42px;
 }
 
 #loginform .R1EIDG-wrapper::before{
