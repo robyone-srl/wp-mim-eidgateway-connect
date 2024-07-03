@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Controller for login routes. Instantiate and call register_routes() to register the routes
+ * * /wp-json/eid-gateway/start_login: redirects to eID-Gateway;
+ * * /wp-json/eid-gateway/login: eID-Gateway redirects to this route.
+ */
 class R1EIDG_LoginController
 {
-    function register_routes() {
+    /**
+     * Registers routes.
+     */
+    function register_routes()
+    {
         register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_START_LOGIN, [
             'methods'  => WP_REST_Server::READABLE,
             'callback' => [$this, "handle_start_login"],
@@ -14,6 +23,10 @@ class R1EIDG_LoginController
         ]);
     }
 
+    /**
+     * Handles the request to start the login, by redirecting to eID-Gateway. The request can have a
+     * redirect_to parameter, that specifies where the user will be redirected after the login.
+     */
     function handle_start_login($request)
     {
         $redirect_to_after_login = $request['redirect_to'] ?? null;
@@ -21,6 +34,9 @@ class R1EIDG_LoginController
         exit();
     }
 
+    /**
+     * Handles the login request, after being redirected from eID-Gateway, logging in the user.
+     */
     function handle_login($request)
     {
         $token = $request['token'];
@@ -60,6 +76,9 @@ class R1EIDG_LoginController
         exit();
     }
 
+    /**
+     * Sets a transient message and redirects to the login screen, where the transient message will be printed.
+     */
     static function set_login_error_and_die($message)
     {
         set_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME, $message);
@@ -67,6 +86,10 @@ class R1EIDG_LoginController
         exit();
     }
 
+    /**
+     * Decodes the JWT token.
+     * @return array Deserialized JWT payload
+     */
     static function decode_jwt($token)
     {
         list(, $base64UrlPayload,) = explode('.', $token);

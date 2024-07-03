@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Functions and constants that regard the settings.
+ */
 class R1EIDG_Settings
 {
     const PAGE = 'R1EIDG';
@@ -9,14 +12,21 @@ class R1EIDG_Settings
     const OPTION_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
     const OPTION_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
 
+    /**
+     * Initializes the actions for the admin page (checks if we are in admin).
+     */
     static function init()
     {
-        if (is_admin()) {
-            add_action('admin_init', [get_class(), 'init_settings']);
-            add_action('admin_menu', [get_class(), 'init_options_page']);
-        }
+        if (!is_admin())
+            return;
+
+        add_action('admin_init', [get_class(), 'init_settings']);
+        add_action('admin_menu', [get_class(), 'init_options_page']);
     }
 
+    /**
+     * Callback for admin_menu to add the menu page.
+     */
     static function init_options_page()
     {
         add_menu_page(
@@ -28,6 +38,9 @@ class R1EIDG_Settings
         );
     }
 
+    /**
+     * Callback to draw the html page
+     */
     static function options_page_html()
     {
         // check user capabilities
@@ -68,6 +81,9 @@ class R1EIDG_Settings
     <?php
     }
 
+    /**
+     * Callback for admin_init for initializing settings.
+     */
     static function init_settings()
     {
         register_setting(R1EIDG_Settings::PAGE, R1EIDG_Settings::OPTIONS);
@@ -100,6 +116,12 @@ class R1EIDG_Settings
         );
     }
 
+    /**
+     * Adds a text field
+     * @param mixed $field_id The id of the field, should be prefixed to be unique.
+     * @param mixed $field_title Field title that will be shown to the user.
+     * @param mixed $section_id Id of the section where the field must appear.
+     */
     private static function add_text_field($field_id, $field_title, $section_id)
     {
         add_settings_field(
@@ -114,6 +136,9 @@ class R1EIDG_Settings
         );
     }
 
+    /**
+     * Callback for drawing the school settings section header
+     */
     static function school_section_callback($args)
     {
     ?>
@@ -121,6 +146,9 @@ class R1EIDG_Settings
     <?php
     }
 
+    /**
+     * Callback that draws a text field
+     */
     static function create_text_field_callback($args)
     {
         $options = get_option(R1EIDG_Settings::OPTIONS);

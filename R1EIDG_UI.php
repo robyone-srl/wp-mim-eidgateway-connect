@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Contains functions that handle the drawing of UI elements.
+ */
 class R1EIDG_UI
 {
     const LOGIN_ERROR_TRANSIENT_NAME = 'eid-gateway-login-errors';
@@ -9,22 +12,31 @@ class R1EIDG_UI
     const BUTTON_SIZE_L = 'l';
     const BUTTON_SIZE_XL = 'xl';
 
+    /**
+     * Configures actions and filters so that the plugin can draw UI elements where needed.
+     */
     static function init()
     {
         add_action('login_form', [get_class(), 'draw_login_button']);
         add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode']);
         add_action('cmb2_admin_init', [get_class(), 'register_user_fields']);
-        add_filter('wp_login_errors', [get_class(), 'print_login_messages']);
+        add_filter('wp_login_errors', [get_class(), 'print_login_errors']);
     }
 
+    /**
+     * Registers a "codice_fiscale" field in the users setting page,
+     * because the plugin looks for user with a "codice_fiscale" meta field that corresponds to the one received from eID-Gateway to log in a user
+     * (the meta field is the same as the <a href="https://wordpress.org/plugins/wp-spid-italia/">WP SPID Italia</a> plugin, for compatibility).
+     * 
+     * @link https://wordpress.org/plugins/wp-spid-italia/
+     */
     static function register_user_fields()
     {
         $cmb_user = new_cmb2_box([
             'id'               => 'R1EIDG_title',
-            'title'            => "eID-Gateway", // Doesn't output for user boxes
-            'object_types'     => array('user'), // Tells CMB2 to use user_meta vs post_meta
-            'show_names'       => true,
-            'new_user_section' => 'add-new-user', // where form will show on new user page. 'add-existing-user' is only other valid option.
+            'title'            => "eID-Gateway",
+            'object_types'     => array('user'),
+            'show_names'       => true
         ]);
 
         $cmb_user->add_field([
@@ -35,7 +47,10 @@ class R1EIDG_UI
         ]);
     }
 
-    static function print_login_messages($errors)
+    /**
+     * Callback for wp_login_errors, that prints then deletes transient messages that have been set by the plugin.
+     */
+    static function print_login_errors($errors)
     {
         $login_error = get_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
         delete_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
@@ -46,16 +61,29 @@ class R1EIDG_UI
         return $errors;
     }
 
+    /**
+     * Callback for the "spid_login_button" shortcode.
+     * 
+     * @param array $atts Array of attributes. Supports a "size" optional attribute, which can be any of the constants that start with "R1EIDG_UI::BUTTON_SIZE_",
+     * and a "redirect_to" optional attribute, which specifies where the user will be redirected after the login.
+     */
     static function draw_login_button_from_shortcode($atts)
     {
         $atts = shortcode_atts([
             'size' => R1EIDG_UI::BUTTON_SIZE_M,
+            'redirect_to' => null,
         ], $atts);
 
-        R1EIDG_UI::draw_login_button($atts['size']);
+        R1EIDG_UI::draw_login_button($atts['size'], $atts['redirect_to']);
     }
     
-    static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M)
+    /**
+     * Draws the "Entra con SPID" and "Entra con CIE" buttons.
+     * 
+     * @param string $size Buttons size. Can be any of R1EIDG_UI::BUTTON_SIZE_*
+     * @param string $redirect_to Where to redirect the user after login. If not set, user will be redirected to the admin page.
+     */
+    static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
     {
         $size = $size ?: R1EIDG_UI::BUTTON_SIZE_M;
         $size = trim(strtolower($size));
@@ -70,7 +98,7 @@ class R1EIDG_UI
 
         $start_login_url = get_site_url(path: '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_START_LOGIN);
 
-        if($redirect_to_after_login = $_GET['redirect_to'] ?? false)
+        if($redirect_to_after_login = $redirect_to ?? $_GET['redirect_to'] ?? false)
         {
             $query = http_build_query([
                 'redirect_to' => $redirect_to_after_login
