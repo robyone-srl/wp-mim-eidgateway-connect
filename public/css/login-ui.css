@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    gap: 6px;
+    gap: 8px;
 }
 
 #loginform .R1EIDG-wrapper{
@@ -12,7 +12,7 @@
 
 #loginform .R1EIDG-wrapper::before{
     content: "oppure";
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .R1EIDG-btn{
