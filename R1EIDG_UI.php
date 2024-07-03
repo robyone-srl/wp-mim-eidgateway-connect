@@ -4,14 +4,20 @@ class R1EIDG_UI
 {
     const LOGIN_ERROR_TRANSIENT_NAME = 'eid-gateway-login-errors';
 
-    public static function init()
+    const BUTTON_SIZE_S = 's';
+    const BUTTON_SIZE_M = 'm';
+    const BUTTON_SIZE_L = 'l';
+    const BUTTON_SIZE_XL = 'xl';
+
+    static function init()
     {
         add_action('login_form', [get_class(), 'draw_login_button']);
+        add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode']);
         add_action('cmb2_admin_init', [get_class(), 'register_user_fields']);
         add_filter('wp_login_errors', [get_class(), 'print_login_messages']);
     }
 
-    public static function register_user_fields()
+    static function register_user_fields()
     {
         $cmb_user = new_cmb2_box([
             'id'               => 'R1EIDG_title',
@@ -29,7 +35,7 @@ class R1EIDG_UI
         ]);
     }
 
-    public static function print_login_messages($errors)
+    static function print_login_messages($errors)
     {
         $login_error = get_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
         delete_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
@@ -40,9 +46,37 @@ class R1EIDG_UI
         return $errors;
     }
 
-    public static function draw_login_button()
+    static function draw_login_button_from_shortcode($atts)
     {
-        $start_login_url = get_site_url() . '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_START_LOGIN;
+        $atts = shortcode_atts([
+            'size' => R1EIDG_UI::BUTTON_SIZE_S,
+        ], $atts);
+
+        R1EIDG_UI::draw_login_button($atts['size']);
+    }
+    
+    static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M)
+    {
+        $size = $size ?: R1EIDG_UI::BUTTON_SIZE_M;
+        $size = trim(strtolower($size));
+        $sizes = [
+            R1EIDG_UI::BUTTON_SIZE_S, 
+            R1EIDG_UI::BUTTON_SIZE_M,
+            R1EIDG_UI::BUTTON_SIZE_L,
+            R1EIDG_UI::BUTTON_SIZE_XL,
+        ];
+        if(!in_array($size, $sizes, true))
+            $size = R1EIDG_UI::BUTTON_SIZE_M;
+
+        $start_login_url = get_site_url(path: '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_START_LOGIN);
+
+        if($redirect_to_after_login = $_GET['redirect_to'] ?? false)
+        {
+            $query = http_build_query([
+                'redirect_to' => $redirect_to_after_login
+            ]);
+            $start_login_url .= '?'.$query;
+        }
 
         wp_enqueue_style(
             'R1EIDG_spid_button',
@@ -66,11 +100,11 @@ class R1EIDG_UI
         );
 ?>
         <div class="R1EIDG-wrapper">
-            <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get">
+            <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
                 <span class="italia-it-button-text">Entra con SPID</span>
             </a>
-            <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-m button-spid button-cie" spid-idp-button="#spid-idp-button-medium-get">
+            <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid button-cie" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/Logo_CIE_ID.svg', __FILE__) ?>" /></span>
                 <span class="italia-it-button-text">Entra con CIE</span>
             </a>

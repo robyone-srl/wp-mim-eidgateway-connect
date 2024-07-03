@@ -6,7 +6,7 @@ class R1EIDG_GatewayURLs
         return "http://robylogin.localhost";
     }
 
-    static function authenticate_url()
+    static function authenticate_url($redirect_to_after_login = null)
     {
         $options = get_option(R1EIDG_Settings::OPTIONS);
 
@@ -16,9 +16,18 @@ class R1EIDG_GatewayURLs
         if (!($client_id && $mechanographic_code))
             return '';
 
+        $redirect_uri = get_site_url(path: '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_LOGIN);
+
+        if($redirect_to_after_login ?? false)
+        {
+            $redirect_uri .= '?' . http_build_query([
+                'redirect_to' => $redirect_to_after_login
+            ]);
+        }
+
         $query = http_build_query([
             'client_id' => $client_id,
-            'redirect_uri' => get_site_url() . '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_LOGIN,
+            'redirect_uri' => $redirect_uri,
             'aggregate_ref_type' => 'MECHANOGRAPHIC_CODE',
             'aggregate_ref_value' => $mechanographic_code
         ]);

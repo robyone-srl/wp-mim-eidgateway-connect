@@ -24,29 +24,22 @@
 const R1EIDG_VERSION = "1.0.0"; // for assets cache busting
 
 require_once __DIR__ . '/R1EIDG_UI.php';
-require_once __DIR__ . '/R1EIDG_LoginRouteHandler.php';
+require_once __DIR__ . '/R1EIDG_LoginController.php';
 require_once __DIR__ . '/R1EIDG_GatewayURLs.php';
 require_once __DIR__ . '/admin/R1EIDG_Settings.php';
 
 R1EIDG_UI::init();
 R1EIDG_Settings::init();
 
-add_action('rest_api_init', 'R1EIDG_register_routes');
 
 const R1EIDG_ROUTE_NAMESPACE = 'eid-gateway';
 
 const R1EIDG_ROUTE_LOGIN = 'login';
 const R1EIDG_ROUTE_START_LOGIN = 'start-login';
 
-function R1EIDG_register_routes()
-{
-    register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN . '(?P<token>)', [
-        'methods'  => WP_REST_Server::READABLE,
-        'callback' => "R1EIDG_LoginRouteHandler::login",
-    ]);
+add_action('rest_api_init', 'R1EIDG_register_controllers');
 
-    register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_START_LOGIN, [
-        'methods'  => WP_REST_Server::READABLE,
-        'callback' => "R1EIDG_LoginRouteHandler::start_login",
-    ]);
+function R1EIDG_register_controllers()
+{
+    (new R1EIDG_LoginController())->register_routes();
 }
