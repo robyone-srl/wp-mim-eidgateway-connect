@@ -11,7 +11,7 @@
  * Plugin Name:       Login con eID-Gateway
  * Description:       Questo plugin non ufficiale facilita il processo di integrazione del sito web scolastico realizzato con WordPress al componente eID-Gateway messo a disposizione dal MIM.
  * Version:           1.0.0
- * Requires at least: 5.2
+ * Requires at least: 5.0
  * Requires PHP:      8.0
  * Author:            Robyone S.r.l.
  * Author URI:        https://robyone.net/
@@ -31,7 +31,7 @@ require_once __DIR__ . '/admin/R1EIDG_Settings.php';
 R1EIDG_UI::init();
 R1EIDG_Settings::init();
 
-//Register routes
+// Register routes
 const R1EIDG_ROUTE_NAMESPACE = 'eid-gateway';
 
 const R1EIDG_ROUTE_LOGIN = 'login';
@@ -43,3 +43,11 @@ function R1EIDG_register_controllers()
 {
     (new R1EIDG_LoginController())->register_routes();
 }
+
+// Load translations
+function R1EIDG_load_translations()
+{
+    $plugin_rel_path = basename(dirname(__FILE__)) . '/languages';
+    load_plugin_textdomain('wp-mim-eidgateway-connect', false, $plugin_rel_path);
+}
+add_action('plugins_loaded', 'R1EIDG_load_translations');
