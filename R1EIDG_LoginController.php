@@ -52,7 +52,7 @@ class R1EIDG_LoginController
 
         // Extract the fiscal number from the token
         $payload = R1EIDG_LoginController::decode_jwt($token);
-        $fiscal_number = $payload['fiscal_number'];
+        $fiscal_number = strtoupper(trim($payload['fiscal_number']));
 
         // Search for users that have the received fiscal number
         $users = get_users(

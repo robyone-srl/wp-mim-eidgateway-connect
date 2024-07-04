@@ -53,7 +53,8 @@ class R1EIDG_Profile
             return;
         }
 
-        update_user_meta($user_id, 'codice_fiscale', $_POST['codice_fiscale']);
+        $new_fiscal_number = strtoupper(trim($_POST['codice_fiscale']));
+        update_user_meta($user_id, 'codice_fiscale', $new_fiscal_number);
     }
 
     /**
