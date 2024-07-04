@@ -6,14 +6,14 @@
 class R1EIDG_Settings
 {
     const PAGE = 'R1EIDG';
-    const OPTIONS = R1EIDG_Settings::PAGE . '_options';
+    const OPTION_NAME = R1EIDG_Settings::PAGE . '_options';
 
-    const OPTION_EID_ENABLED = R1EIDG_Settings::PAGE . '_eid_enabled';
-    const OPTION_EID_TEST = R1EIDG_Settings::PAGE . '_eid_test';
+    const SETTING_EID_ENABLED = R1EIDG_Settings::PAGE . '_eid_enabled';
+    const SETTING_EID_TEST = R1EIDG_Settings::PAGE . '_eid_test';
 
-    const OPTION_SCHOOL_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
-    const OPTION_SCHOOL_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
-    const OPTION_SCHOOL_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
+    const SETTING_SCHOOL_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
+    const SETTING_SCHOOL_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
+    const SETTING_SCHOOL_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
 
     /**
      * Initializes the actions for the admin page (checks if we are in admin).
@@ -63,17 +63,18 @@ class R1EIDG_Settings
             return;
         }
 
-        // add error/update messages
-
-        // check if the user have submitted the settings
-        // WordPress will add the "settings-updated" $_GET parameter to the url
-        if (isset($_GET['settings-updated'])) {
-            // add settings saved message with the class of "updated"
+        if (!R1EIDG_Settings::is_configuration_complete()) {
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
-                R1EIDG_Settings::PAGE . '_message',
-                "Impostazioni salvate",
-                'updated'
+                R1EIDG_Settings::PAGE . '_incomplete_configuration',
+                "La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori."
+            );
+        } else if (!R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED)) {
+            add_settings_error(
+                R1EIDG_Settings::PAGE . '_messages',
+                R1EIDG_Settings::PAGE . '_eid_disabled',
+                "L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.",
+                'warning'
             );
         }
 
@@ -101,7 +102,10 @@ class R1EIDG_Settings
      */
     static function init_settings()
     {
-        register_setting(R1EIDG_Settings::PAGE, R1EIDG_Settings::OPTIONS);
+        register_setting(
+            R1EIDG_Settings::PAGE,
+            R1EIDG_Settings::OPTION_NAME
+        );
 
         $eid_section_id = R1EIDG_Settings::PAGE . '_eid_section';
         $school_section_id = R1EIDG_Settings::PAGE . '_school_section';
@@ -116,14 +120,14 @@ class R1EIDG_Settings
         );
 
         R1EIDG_Settings::add_field(
-            R1EIDG_Settings::OPTION_EID_ENABLED,
+            R1EIDG_Settings::SETTING_EID_ENABLED,
             "Abilita login con eID-Gateway",
             'checkbox',
             $eid_section_id,
         );
 
         R1EIDG_Settings::add_field(
-            R1EIDG_Settings::OPTION_EID_TEST,
+            R1EIDG_Settings::SETTING_EID_TEST,
             "Modalità di test di eID-Gateway",
             'checkbox',
             $eid_section_id,
@@ -139,21 +143,21 @@ class R1EIDG_Settings
         );
 
         R1EIDG_Settings::add_field(
-            R1EIDG_Settings::OPTION_SCHOOL_CLIENT_ID,
+            R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
             "Client ID fornito dal SIDI",
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
-            R1EIDG_Settings::OPTION_SCHOOL_SECRET,
+            R1EIDG_Settings::SETTING_SCHOOL_SECRET,
             "Secret key fornita dal SIDI",
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
-            R1EIDG_Settings::OPTION_SCHOOL_MECHANOGRAPHIC_CODE,
+            R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE,
             "Codice meccanografico della scuola",
             'text',
             $school_section_id,
@@ -208,8 +212,7 @@ class R1EIDG_Settings
      */
     static function create_field_callback($args)
     {
-        $options = get_option(R1EIDG_Settings::OPTIONS);
-        $current_value = $options[$args['label_for']] ?? '';
+        $current_value = R1EIDG_Settings::get_setting($args['label_for']) ?? '';
 
         $type = $args['type'] ?? 'text';
 
@@ -222,10 +225,44 @@ class R1EIDG_Settings
             case 'checkbox':
                 $attributes = 'value="true" ' . checked('true', $current_value, false);
                 break;
+            default:
+                $attributes = 'value="' . esc_html($current_value) . '"';
+                break;
         }
 
     ?>
-        <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTIONS . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?> />
+        <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTION_NAME . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?> />
 <?php
+    }
+
+    /**
+     * Checks if the minimum configuration for the plugin to work is present.
+     * @return bool Wheter the plugin has the necessary data to work.
+     */
+    static function is_configuration_complete(): bool
+    {
+        return R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID)
+            && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE);
+    }
+
+    /**
+     * Checks if a checkbox setting has a value
+     * @param string $setting_id Setting id (they are defined as constants and start with R1EIDG_Settings::SETTING_*)
+     * @return bool Wheter the checkbox setting has a truthy value
+     */
+    static function is_setting_enabled($setting_id): bool
+    {
+        return R1EIDG_Settings::get_setting($setting_id) ?? false;
+    }
+
+    /**
+     * Gets the value of a setting.
+     * @param string $setting_id Setting id (they are defined as constants and start with R1EIDG_Settings::SETTING_*)
+     * @return string|null The setting value (null if not set)
+     */
+    static function get_setting($setting_id): string|null
+    {
+        $settings = get_option(R1EIDG_Settings::OPTION_NAME);
+        return $settings[$setting_id] ?? null;
     }
 }

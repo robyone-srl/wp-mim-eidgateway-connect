@@ -85,7 +85,7 @@ class R1EIDG_UI
      */
     static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
     {
-        $eid_enabled = get_option(R1EIDG_Settings::OPTIONS)[R1EIDG_Settings::OPTION_EID_ENABLED] ?? false;
+        $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
         if (!$eid_enabled)
             return;
 

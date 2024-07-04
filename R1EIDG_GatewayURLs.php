@@ -10,7 +10,7 @@ class R1EIDG_GatewayURLs
      */
     static function base_url()
     {
-        $eid_test = get_option(R1EIDG_Settings::OPTIONS)[R1EIDG_Settings::OPTION_EID_TEST] ?? false;
+        $eid_test = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_TEST);
         
         return "http://robylogin.localhost"; //temporary
 
@@ -27,13 +27,11 @@ class R1EIDG_GatewayURLs
      */
     static function authenticate_url($redirect_to_after_login = null)
     {
-        $options = get_option(R1EIDG_Settings::OPTIONS);
+        if(!R1EIDG_Settings::is_configuration_complete())
+            throw new Exception("Configurazione accesso eID-Gateway incompleta");
 
-        $client_id = $options[R1EIDG_Settings::OPTION_SCHOOL_CLIENT_ID] ?? false;
-        $mechanographic_code = $options[R1EIDG_Settings::OPTION_SCHOOL_MECHANOGRAPHIC_CODE] ?? false;
-
-        if (!($client_id && $mechanographic_code))
-            return '';
+        $client_id = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID);
+        $mechanographic_code = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE);
 
         $redirect_uri = get_rest_url(path: R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_LOGIN);
 
