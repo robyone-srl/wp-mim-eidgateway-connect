@@ -19,10 +19,7 @@ Per utilizzare il plugin è necessario che la scuola abbia aderito al [Gateway d
 
 Una volta registrato il servizio, si ottiene un Client ID, da utilizzare della configurazione del plugin.
 
-== Installation ==
-Per prima cosa, scarica, installa e attiva il plugin.
-
-# Registrazione del codice fiscale
+# Registrazione dei codici fiscali
 
 Per ogni utente che desideri possa accedere con eID-Gateway, devi registrare il suo codice fiscale.
 
@@ -44,6 +41,9 @@ Una volta inseriti i codici fiscali, configura il plugin:
 4. Salva con l'apposito pulsante.
 
 Ora, gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare l'accesso con SPID, CIE o eIDAS. I pulsanti di login appariranno sotto al form di login di WordPress.
+
+== Installation ==
+[todo]
 
 == Frequently Asked Questions ==
 [todo]

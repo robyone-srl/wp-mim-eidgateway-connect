@@ -1,14 +1,17 @@
 <?php
 
 /**
- * Functions to display additional fields in the user settings
+ * Functions to display additional fields in the user settings. Inspired by https://usersinsights.com/wordpress-add-custom-field-to-user-profile/
  */
 class R1EIDG_Profile
 {
     static function init()
     {
+        add_action('show_user_profile', [get_class(), 'add_user_fields']);
         add_action('edit_user_profile', [get_class(), 'add_user_fields']);
+
         add_action('edit_user_profile_update', [get_class(), 'save_user_fields']);
+        add_action('personal_options_update', [get_class(), 'save_user_fields']);
     }
 
     /**
@@ -20,6 +23,10 @@ class R1EIDG_Profile
      */
     static function add_user_fields($user)
     {
+        if (!R1EIDG_Profile::can_edit_eid_user_fields($user->ID)) {
+            return;
+        }
+
         $fiscal_number = get_user_meta($user->ID, 'codice_fiscale', true);
 ?>
         <table class="form-table">
@@ -34,7 +41,7 @@ class R1EIDG_Profile
     }
 
     /**
-     * Callback for edit_user_profile_update to save the user field. Inspired by https://usersinsights.com/wordpress-add-custom-field-to-user-profile/
+     * Callback for edit_user_profile_update to save the user field.
      */
     static function save_user_fields($user_id)
     {
@@ -42,10 +49,18 @@ class R1EIDG_Profile
             return;
         }
 
-        if (!current_user_can('edit_user', $user_id)) {
+        if (!R1EIDG_Profile::can_edit_eid_user_fields($user_id)) {
             return;
         }
 
         update_user_meta($user_id, 'codice_fiscale', $_POST['codice_fiscale']);
+    }
+
+    /**
+     * Check if the logged user should be able to modify user data related to eID-Gateway (the fiscal number).
+     * @param mixed $user_id the user id of the user that is being modified
+     */
+    static function can_edit_eid_user_fields($user_id) : bool{
+        return is_super_admin() && current_user_can('edit_user', $user_id);
     }
 }
