@@ -3,7 +3,7 @@
 /**
  * Integrazione del login di WordPress con eID-Gateway
  *
- * @package           MIMEIdGatewayUnofficial
+ * @package           MIMEIdGatewayConnect
  * @author            Robyone S.r.l.
  * @copyright         2024 Robyone S.r.l.
  * @license           GPL-2.0-or-later
@@ -16,7 +16,7 @@
  * Requires PHP:      8.0
  * Author:            Robyone S.r.l.
  * Author URI:        https://robyone.net/
- * Text Domain:       mim-eid-gateway-unofficial
+ * Text Domain:       mim-eid-gateway-connect
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -28,10 +28,11 @@ require_once __DIR__ . '/R1EIDG_LoginController.php';
 require_once __DIR__ . '/R1EIDG_GatewayURLs.php';
 require_once __DIR__ . '/admin/R1EIDG_Settings.php';
 
+// Initialize UI (login buttons) and settings
 R1EIDG_UI::init();
 R1EIDG_Settings::init();
 
-
+//Register routes
 const R1EIDG_ROUTE_NAMESPACE = 'eid-gateway';
 
 const R1EIDG_ROUTE_LOGIN = 'login';
