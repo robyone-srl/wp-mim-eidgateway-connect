@@ -33,10 +33,12 @@ class R1EIDG_Settings
      */
     static function init_options_page()
     {
+        $configuration_complete = R1EIDG_Settings::is_configuration_complete();
+
         add_submenu_page(
             'options-general.php',
             "Impostazioni di eID-Gateway",
-            "eID-Gateway",
+            $configuration_complete ? "eID-Gateway" : 'eID-Gateway <span class="awaiting-mod">!</span>',
             'manage_options',
             R1EIDG_Settings::PAGE,
             [get_class(), 'options_page_html']
