@@ -34,14 +34,14 @@ class R1EIDG_UI
     {
         $cmb_user = new_cmb2_box([
             'id'               => 'R1EIDG_title',
-            'title'            => "eID-Gateway",
+            'title'            => esc_html__("eID-Gateway", R1EIDG_TEXT_DOMAIN),
             'object_types'     => array('user'),
             'show_names'       => true
         ]);
 
         $cmb_user->add_field([
-            'name'     => 'Codice Fiscale',
-            'desc'     => "Il codice fiscale dell'utente, per permettere l'accesso con SPID, CIE o eIDAS tramite eID-Gateway.",
+            'name'     => esc_html__("Codice Fiscale", R1EIDG_TEXT_DOMAIN),
+            'desc'     => esc_html__("Il codice fiscale dell'utente, per permettere l'accesso con SPID, CIE o eIDAS tramite eID-Gateway.", R1EIDG_TEXT_DOMAIN),
             'id'       => 'codice_fiscale',
             'type'     => 'text',
         ]);
@@ -133,11 +133,11 @@ class R1EIDG_UI
         <div class="R1EIDG-wrapper">
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text">Entra con SPID</span>
+                <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", R1EIDG_TEXT_DOMAIN) ?></span>
             </a>
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid button-cie" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/Logo_CIE_ID.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text">Entra con CIE</span>
+                <span class="italia-it-button-text"><?= esc_html__("Entra con CIE", R1EIDG_TEXT_DOMAIN) ?></span>
             </a>
         </div>
 <?php

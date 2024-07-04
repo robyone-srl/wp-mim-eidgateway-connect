@@ -11,7 +11,7 @@ class R1EIDG_GatewayURLs
     static function base_url()
     {
         $eid_test = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_TEST);
-        
+
         return "http://robylogin.localhost"; //temporary
 
         if ($eid_test)
@@ -27,8 +27,8 @@ class R1EIDG_GatewayURLs
      */
     static function authenticate_url($redirect_to_after_login = null)
     {
-        if(!R1EIDG_Settings::is_configuration_complete())
-            throw new Exception("Configurazione accesso eID-Gateway incompleta");
+        if (!R1EIDG_Settings::is_configuration_complete())
+            throw new Exception(esc_html__("Configurazione accesso eID-Gateway incompleta", R1EIDG_TEXT_DOMAIN));
 
         $client_id = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID);
         $mechanographic_code = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE);
@@ -59,7 +59,7 @@ class R1EIDG_GatewayURLs
     {
         return R1EIDG_GatewayURLs::base_url() . "/sp/token/verify.php?token=$token";
     }
-    
+
     /**
      * Gets the URL to download the JWK Set to verify the JWT signature.
      */

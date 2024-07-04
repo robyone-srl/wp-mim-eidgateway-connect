@@ -21,6 +21,7 @@
  */
 
 const R1EIDG_VERSION = "1.0.0"; // for assets cache busting
+const R1EIDG_TEXT_DOMAIN = "wp-mim-eidgateway-connect";
 
 require_once __DIR__ . '/R1EIDG_UI.php';
 require_once __DIR__ . '/R1EIDG_LoginController.php';

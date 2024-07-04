@@ -37,8 +37,8 @@ class R1EIDG_Settings
 
         add_submenu_page(
             'options-general.php',
-            "Impostazioni di eID-Gateway",
-            $configuration_complete ? "eID-Gateway" : 'eID-Gateway <span class="awaiting-mod">!</span>',
+            esc_html__("Impostazioni di eID-Gateway", R1EIDG_TEXT_DOMAIN),
+            esc_html__("eID-Gateway", R1EIDG_TEXT_DOMAIN) . ($configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>'),
             'manage_options',
             R1EIDG_Settings::PAGE,
             [get_class(), 'options_page_html']
@@ -69,13 +69,13 @@ class R1EIDG_Settings
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_incomplete_configuration',
-                "La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori."
+                esc_html__("La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori.", R1EIDG_TEXT_DOMAIN)
             );
         } else if (!R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED)) {
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_eid_disabled',
-                "L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.",
+                esc_html__("L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.", R1EIDG_TEXT_DOMAIN),
                 'warning'
             );
         }
@@ -92,7 +92,7 @@ class R1EIDG_Settings
                 // output setting sections and their fields
                 do_settings_sections(R1EIDG_Settings::PAGE);
                 // output save settings button
-                submit_button('Salva');
+                submit_button(__("Save"));
                 ?>
             </form>
         </div>
@@ -116,21 +116,21 @@ class R1EIDG_Settings
 
         add_settings_section(
             $eid_section_id,
-            "Funzionamento di eID-Gateway",
+            esc_html__("Funzionamento di eID-Gateway", R1EIDG_TEXT_DOMAIN),
             [get_class(), 'eid_section_callback'],
             R1EIDG_Settings::PAGE
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_EID_ENABLED,
-            "Abilita login con eID-Gateway",
+            esc_html__("Abilita login con eID-Gateway", R1EIDG_TEXT_DOMAIN),
             'checkbox',
             $eid_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_EID_TEST,
-            "Modalità di test di eID-Gateway",
+            esc_html__("Abilita modalità di test di eID-Gateway", R1EIDG_TEXT_DOMAIN),
             'checkbox',
             $eid_section_id,
         );
@@ -139,28 +139,28 @@ class R1EIDG_Settings
 
         add_settings_section(
             $school_section_id,
-            "Dati della scuola",
+            esc_html__("Dati della scuola", R1EIDG_TEXT_DOMAIN),
             [get_class(), 'school_section_callback'],
             R1EIDG_Settings::PAGE
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
-            "Client ID fornito dal SIDI",
+            esc_html__("Client ID fornito dal SIDI", R1EIDG_TEXT_DOMAIN),
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_SECRET,
-            "Secret key fornita dal SIDI",
+            esc_html__("Secret key fornita dal SIDI", R1EIDG_TEXT_DOMAIN),
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE,
-            "Codice meccanografico della scuola",
+            esc_html__("Codice meccanografico della scuola", R1EIDG_TEXT_DOMAIN),
             'text',
             $school_section_id,
         );
@@ -194,7 +194,9 @@ class R1EIDG_Settings
     static function school_section_callback($args)
     {
     ?>
-        <p id="<?= $args['id'] ?>">Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.</p>
+        <p id="<?= $args['id'] ?>">
+            <?= esc_html__("Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.", R1EIDG_TEXT_DOMAIN) ?>
+        </p>
     <?php
     }
 
@@ -204,7 +206,9 @@ class R1EIDG_Settings
     static function eid_section_callback($args)
     {
     ?>
-        <p id="<?= $args['id'] ?>">Gestisci le impostazioni generali</p>
+        <p id="<?= $args['id'] ?>">
+            <?= esc_html__("Gestisci le impostazioni generali", R1EIDG_TEXT_DOMAIN) ?>
+        </p>
     <?php
     }
 
