@@ -26,10 +26,15 @@ require_once __DIR__ . '/R1EIDG_UI.php';
 require_once __DIR__ . '/R1EIDG_LoginController.php';
 require_once __DIR__ . '/R1EIDG_GatewayURLs.php';
 require_once __DIR__ . '/admin/R1EIDG_Settings.php';
+require_once __DIR__ . '/admin/R1EIDG_Profile.php';
 
 // Initialize UI (login buttons) and settings
 R1EIDG_UI::init();
-R1EIDG_Settings::init();
+
+if (is_admin()) {
+    R1EIDG_Settings::init();
+    R1EIDG_Profile::init();
+}
 
 // Register routes
 const R1EIDG_ROUTE_NAMESPACE = 'eid-gateway';

@@ -16,13 +16,10 @@ class R1EIDG_Settings
     const SETTING_SCHOOL_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
 
     /**
-     * Initializes the actions for the admin page (checks if we are in admin).
+     * Initializes the actions for the admin page.
      */
     static function init()
     {
-        if (!is_admin())
-            return;
-
         add_action('admin_init', [get_class(), 'init_settings']);
         add_action('admin_menu', [get_class(), 'init_options_page']);
         add_filter('plugin_action_links_wp-mim-eidgateway-connect/wp-mim-eidgateway-connect.php', [get_class(), 'init_options_link']);
@@ -226,13 +223,13 @@ class R1EIDG_Settings
 
         switch ($type) {
             case 'text':
-                $attributes = 'value="' . esc_html($current_value) . '"';
+                $attributes = 'value="' . esc_attr($current_value) . '"';
                 break;
             case 'checkbox':
                 $attributes = 'value="true" ' . checked('true', $current_value, false);
                 break;
             default:
-                $attributes = 'value="' . esc_html($current_value) . '"';
+                $attributes = 'value="' . esc_attr($current_value) . '"';
                 break;
         }
 

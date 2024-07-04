@@ -19,32 +19,7 @@ class R1EIDG_UI
     {
         add_action('login_form', [get_class(), 'draw_login_button']);
         add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode']);
-        add_action('cmb2_admin_init', [get_class(), 'register_user_fields']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors']);
-    }
-
-    /**
-     * Registers a "codice_fiscale" field in the users setting page,
-     * because the plugin looks for user with a "codice_fiscale" meta field that corresponds to the one received from eID-Gateway to log in a user
-     * (the meta field is the same as the <a href="https://wordpress.org/plugins/wp-spid-italia/">WP SPID Italia</a> plugin, for compatibility).
-     * 
-     * @link https://wordpress.org/plugins/wp-spid-italia/
-     */
-    static function register_user_fields()
-    {
-        $cmb_user = new_cmb2_box([
-            'id'               => 'R1EIDG_title',
-            'title'            => esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect'),
-            'object_types'     => array('user'),
-            'show_names'       => true
-        ]);
-
-        $cmb_user->add_field([
-            'name'     => esc_html__("Codice Fiscale", 'wp-mim-eidgateway-connect'),
-            'desc'     => esc_html__("Il codice fiscale dell'utente, per permettere l'accesso con SPID, CIE o eIDAS tramite eID-Gateway.", 'wp-mim-eidgateway-connect'),
-            'id'       => 'codice_fiscale',
-            'type'     => 'text',
-        ]);
     }
 
     /**
@@ -129,7 +104,7 @@ class R1EIDG_UI
             [],
             R1EIDG_VERSION
         );
-?>
+    ?>
         <div class="R1EIDG-wrapper">
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
