@@ -25,6 +25,7 @@ class R1EIDG_Settings
 
         add_action('admin_init', [get_class(), 'init_settings']);
         add_action('admin_menu', [get_class(), 'init_options_page']);
+        add_filter('plugin_action_links_wp-mim-eidgateway-connect/wp-mim-eidgateway-connect.php', [get_class(), 'init_options_link']);
     }
 
     /**
@@ -32,13 +33,24 @@ class R1EIDG_Settings
      */
     static function init_options_page()
     {
-        add_menu_page(
+        add_submenu_page(
+            'options-general.php',
             "Impostazioni di eID-Gateway",
             "eID-Gateway",
             'manage_options',
             R1EIDG_Settings::PAGE,
             [get_class(), 'options_page_html']
         );
+    }
+
+    /**
+     * Callback for plugin_action_links_... to add the settings link to the plugin entry in plugins page.
+     */
+    static function init_options_link($links)
+    {
+        $settings_link = '<a href="' . menu_page_url(R1EIDG_Settings::PAGE, false) . '">' . __('Settings') . '</a>';
+        array_push($links, $settings_link);
+        return $links;
     }
 
     /**
@@ -179,16 +191,16 @@ class R1EIDG_Settings
         <p id="<?= $args['id'] ?>">Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.</p>
     <?php
     }
-    
+
     /**
-    * Callback for drawing the school settings section header
-    */
-   static function eid_section_callback($args)
-   {
-   ?>
-       <p id="<?= $args['id'] ?>">Gestisci le impostazioni generali</p>
-   <?php
-   }
+     * Callback for drawing the school settings section header
+     */
+    static function eid_section_callback($args)
+    {
+    ?>
+        <p id="<?= $args['id'] ?>">Gestisci le impostazioni generali</p>
+    <?php
+    }
 
     /**
      * Callback that draws a field
@@ -199,21 +211,21 @@ class R1EIDG_Settings
         $options = get_option(R1EIDG_Settings::OPTIONS);
         $current_value = $options[$args['label_for']] ?? '';
 
-        $type=$args['type'] ?? 'text';
+        $type = $args['type'] ?? 'text';
 
         $attributes = '';
 
-        switch($type){
+        switch ($type) {
             case 'text':
-                $attributes = 'value="'. esc_html($current_value) .'"';
+                $attributes = 'value="' . esc_html($current_value) . '"';
                 break;
             case 'checkbox':
-                $attributes = 'value="true" '.checked('true', $current_value, false);
+                $attributes = 'value="true" ' . checked('true', $current_value, false);
                 break;
         }
 
     ?>
-        <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTIONS . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?>/>
+        <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTIONS . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?> />
 <?php
     }
 }
