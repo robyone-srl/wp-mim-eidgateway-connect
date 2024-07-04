@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Functions to generate the URLs that point to eID-Gateway.
  */
@@ -9,7 +10,14 @@ class R1EIDG_GatewayURLs
      */
     static function base_url()
     {
-        return "http://robylogin.localhost";
+        $eid_test = get_option(R1EIDG_Settings::OPTIONS)[R1EIDG_Settings::OPTION_EID_TEST] ?? false;
+        
+        return "http://robylogin.localhost"; //temporary
+
+        if ($eid_test)
+            return "https://eid-test.istruzione.it/eid-gateway";
+
+        return "https://eid.istruzione.it/eid-gateway";
     }
 
     /**
@@ -21,16 +29,15 @@ class R1EIDG_GatewayURLs
     {
         $options = get_option(R1EIDG_Settings::OPTIONS);
 
-        $client_id = $options[R1EIDG_Settings::OPTION_CLIENT_ID] ?? false;
-        $mechanographic_code = $options[R1EIDG_Settings::OPTION_MECHANOGRAPHIC_CODE] ?? false;
+        $client_id = $options[R1EIDG_Settings::OPTION_SCHOOL_CLIENT_ID] ?? false;
+        $mechanographic_code = $options[R1EIDG_Settings::OPTION_SCHOOL_MECHANOGRAPHIC_CODE] ?? false;
 
         if (!($client_id && $mechanographic_code))
             return '';
 
-        $redirect_uri = get_site_url(path: '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_LOGIN);
+        $redirect_uri = get_rest_url(path: R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_LOGIN);
 
-        if($redirect_to_after_login ?? false)
-        {
+        if ($redirect_to_after_login ?? false) {
             $redirect_uri .= '?' . http_build_query([
                 'redirect_to' => $redirect_to_after_login
             ]);
@@ -43,7 +50,7 @@ class R1EIDG_GatewayURLs
             'aggregate_ref_value' => $mechanographic_code
         ]);
 
-        return R1EIDG_GatewayURLs::base_url() . "/authenticate.php?$query";
+        return R1EIDG_GatewayURLs::base_url() . "/sp/authenticate.php?$query";
     }
 
     /**
@@ -52,6 +59,14 @@ class R1EIDG_GatewayURLs
      */
     static function verify_url($token)
     {
-        return R1EIDG_GatewayURLs::base_url() . "/token/verify.php?token=$token";
+        return R1EIDG_GatewayURLs::base_url() . "/sp/token/verify.php?token=$token";
+    }
+    
+    /**
+     * Gets the URL to download the JWK Set to verify the JWT signature.
+     */
+    static function certificate_url()
+    {
+        return R1EIDG_GatewayURLs::base_url() . "/oauth2/certs";
     }
 }

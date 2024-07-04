@@ -2,8 +2,8 @@
 
 /**
  * Controller for login routes. Instantiate and call register_routes() to register the routes
- * * /wp-json/eid-gateway/start_login: redirects to eID-Gateway;
- * * /wp-json/eid-gateway/login: eID-Gateway redirects to this route.
+ * * [rest-url]/eid-gateway/start_login: redirects to eID-Gateway;
+ * * [rest-url]/eid-gateway/login: eID-Gateway redirects to this route.
  */
 class R1EIDG_LoginController
 {

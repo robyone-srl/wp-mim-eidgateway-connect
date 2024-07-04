@@ -76,34 +76,37 @@ class R1EIDG_UI
 
         R1EIDG_UI::draw_login_button($atts['size'], $atts['redirect_to']);
     }
-    
+
     /**
-     * Draws the "Entra con SPID" and "Entra con CIE" buttons.
+     * Draws the "Entra con SPID" and "Entra con CIE" buttons. Checks if the option to login with eID-Gateway is enabled.
      * 
      * @param string $size Buttons size. Can be any of R1EIDG_UI::BUTTON_SIZE_*
      * @param string $redirect_to Where to redirect the user after login. If not set, user will be redirected to the admin page.
      */
     static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
     {
+        $eid_enabled = get_option(R1EIDG_Settings::OPTIONS)[R1EIDG_Settings::OPTION_EID_ENABLED] ?? false;
+        if (!$eid_enabled)
+            return;
+
         $size = $size ?: R1EIDG_UI::BUTTON_SIZE_M;
         $size = trim(strtolower($size));
         $sizes = [
-            R1EIDG_UI::BUTTON_SIZE_S, 
+            R1EIDG_UI::BUTTON_SIZE_S,
             R1EIDG_UI::BUTTON_SIZE_M,
             R1EIDG_UI::BUTTON_SIZE_L,
             R1EIDG_UI::BUTTON_SIZE_XL,
         ];
-        if(!in_array($size, $sizes, true))
+        if (!in_array($size, $sizes, true))
             $size = R1EIDG_UI::BUTTON_SIZE_M;
 
-        $start_login_url = get_site_url(path: '/wp-json/' . R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_START_LOGIN);
+        $start_login_url = get_rest_url(path: R1EIDG_ROUTE_NAMESPACE . '/' . R1EIDG_ROUTE_START_LOGIN);
 
-        if($redirect_to_after_login = $redirect_to ?? $_GET['redirect_to'] ?? false)
-        {
+        if ($redirect_to_after_login = $redirect_to ?? $_GET['redirect_to'] ?? false) {
             $query = http_build_query([
                 'redirect_to' => $redirect_to_after_login
             ]);
-            $start_login_url .= '?'.$query;
+            $start_login_url .= '?' . $query;
         }
 
         wp_enqueue_style(

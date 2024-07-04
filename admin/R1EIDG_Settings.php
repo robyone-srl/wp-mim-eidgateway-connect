@@ -8,9 +8,12 @@ class R1EIDG_Settings
     const PAGE = 'R1EIDG';
     const OPTIONS = R1EIDG_Settings::PAGE . '_options';
 
-    const OPTION_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
-    const OPTION_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
-    const OPTION_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
+    const OPTION_EID_ENABLED = R1EIDG_Settings::PAGE . '_eid_enabled';
+    const OPTION_EID_TEST = R1EIDG_Settings::PAGE . '_eid_test';
+
+    const OPTION_SCHOOL_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
+    const OPTION_SCHOOL_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
+    const OPTION_SCHOOL_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
 
     /**
      * Initializes the actions for the admin page (checks if we are in admin).
@@ -88,7 +91,33 @@ class R1EIDG_Settings
     {
         register_setting(R1EIDG_Settings::PAGE, R1EIDG_Settings::OPTIONS);
 
+        $eid_section_id = R1EIDG_Settings::PAGE . '_eid_section';
         $school_section_id = R1EIDG_Settings::PAGE . '_school_section';
+
+        // eID-Gateway settings
+
+        add_settings_section(
+            $eid_section_id,
+            "Funzionamento di eID-Gateway",
+            [get_class(), 'eid_section_callback'],
+            R1EIDG_Settings::PAGE
+        );
+
+        R1EIDG_Settings::add_field(
+            R1EIDG_Settings::OPTION_EID_ENABLED,
+            "Abilita login con eID-Gateway",
+            'checkbox',
+            $eid_section_id,
+        );
+
+        R1EIDG_Settings::add_field(
+            R1EIDG_Settings::OPTION_EID_TEST,
+            "Modalità di test di eID-Gateway",
+            'checkbox',
+            $eid_section_id,
+        );
+
+        // School settings
 
         add_settings_section(
             $school_section_id,
@@ -97,21 +126,24 @@ class R1EIDG_Settings
             R1EIDG_Settings::PAGE
         );
 
-        R1EIDG_Settings::add_text_field(
-            R1EIDG_Settings::OPTION_CLIENT_ID,
+        R1EIDG_Settings::add_field(
+            R1EIDG_Settings::OPTION_SCHOOL_CLIENT_ID,
             "Client ID fornito dal SIDI",
+            'text',
             $school_section_id,
         );
 
-        R1EIDG_Settings::add_text_field(
-            R1EIDG_Settings::OPTION_SECRET,
+        R1EIDG_Settings::add_field(
+            R1EIDG_Settings::OPTION_SCHOOL_SECRET,
             "Secret key fornita dal SIDI",
+            'text',
             $school_section_id,
         );
 
-        R1EIDG_Settings::add_text_field(
-            R1EIDG_Settings::OPTION_MECHANOGRAPHIC_CODE,
+        R1EIDG_Settings::add_field(
+            R1EIDG_Settings::OPTION_SCHOOL_MECHANOGRAPHIC_CODE,
             "Codice meccanografico della scuola",
+            'text',
             $school_section_id,
         );
     }
@@ -120,19 +152,21 @@ class R1EIDG_Settings
      * Adds a text field
      * @param mixed $field_id The id of the field, should be prefixed to be unique.
      * @param mixed $field_title Field title that will be shown to the user.
+     * @param mixed $type Will be used as type attribute in the input element.
      * @param mixed $section_id Id of the section where the field must appear.
      */
-    private static function add_text_field($field_id, $field_title, $section_id)
+    private static function add_field($field_id, $field_title, $type, $section_id)
     {
         add_settings_field(
             $field_id,
             $field_title,
-            [get_class(), 'create_text_field_callback'],
+            [get_class(), 'create_field_callback'],
             R1EIDG_Settings::PAGE,
             $section_id,
-            array(
+            [
                 'label_for' => $field_id,
-            )
+                'type' => $type
+            ]
         );
     }
 
@@ -145,17 +179,41 @@ class R1EIDG_Settings
         <p id="<?= $args['id'] ?>">Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.</p>
     <?php
     }
+    
+    /**
+    * Callback for drawing the school settings section header
+    */
+   static function eid_section_callback($args)
+   {
+   ?>
+       <p id="<?= $args['id'] ?>">Gestisci le impostazioni generali</p>
+   <?php
+   }
 
     /**
-     * Callback that draws a text field
+     * Callback that draws a field
+     * @param array $args array that sould contain a 'label_for' key with the value that corresponds to the setting id, and a 'type' key that will be used in the type attribute of the input element. 
      */
-    static function create_text_field_callback($args)
+    static function create_field_callback($args)
     {
         $options = get_option(R1EIDG_Settings::OPTIONS);
         $current_value = $options[$args['label_for']] ?? '';
 
+        $type=$args['type'] ?? 'text';
+
+        $attributes = '';
+
+        switch($type){
+            case 'text':
+                $attributes = 'value="'. esc_html($current_value) .'"';
+                break;
+            case 'checkbox':
+                $attributes = 'value="true" '.checked('true', $current_value, false);
+                break;
+        }
+
     ?>
-        <input type="text" name="<?= R1EIDG_Settings::OPTIONS . '[' . $args['label_for'] . ']' ?>" value="<?= esc_html($current_value) ?>" />
+        <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTIONS . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?>/>
 <?php
     }
 }
