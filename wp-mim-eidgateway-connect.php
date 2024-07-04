@@ -3,7 +3,6 @@
 /**
  * Integrazione del login di WordPress con eID-Gateway
  *
- * @package           MIMEIdGatewayConnect
  * @author            Robyone S.r.l.
  * @copyright         2024 Robyone S.r.l.
  * @license           GPL-2.0-or-later
@@ -16,7 +15,7 @@
  * Requires PHP:      8.0
  * Author:            Robyone S.r.l.
  * Author URI:        https://robyone.net/
- * Text Domain:       mim-eid-gateway-connect
+ * Text Domain:       wp-mim-eidgateway-connect
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
