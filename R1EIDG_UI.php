@@ -34,14 +34,14 @@ class R1EIDG_UI
     {
         $cmb_user = new_cmb2_box([
             'id'               => 'R1EIDG_title',
-            'title'            => esc_html__("eID-Gateway", R1EIDG_TEXT_DOMAIN),
+            'title'            => esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect'),
             'object_types'     => array('user'),
             'show_names'       => true
         ]);
 
         $cmb_user->add_field([
-            'name'     => esc_html__("Codice Fiscale", R1EIDG_TEXT_DOMAIN),
-            'desc'     => esc_html__("Il codice fiscale dell'utente, per permettere l'accesso con SPID, CIE o eIDAS tramite eID-Gateway.", R1EIDG_TEXT_DOMAIN),
+            'name'     => esc_html__("Codice Fiscale", 'wp-mim-eidgateway-connect'),
+            'desc'     => esc_html__("Il codice fiscale dell'utente, per permettere l'accesso con SPID, CIE o eIDAS tramite eID-Gateway.", 'wp-mim-eidgateway-connect'),
             'id'       => 'codice_fiscale',
             'type'     => 'text',
         ]);
@@ -133,11 +133,11 @@ class R1EIDG_UI
         <div class="R1EIDG-wrapper">
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", R1EIDG_TEXT_DOMAIN) ?></span>
+                <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", 'wp-mim-eidgateway-connect') ?></span>
             </a>
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid button-cie" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/Logo_CIE_ID.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text"><?= esc_html__("Entra con CIE", R1EIDG_TEXT_DOMAIN) ?></span>
+                <span class="italia-it-button-text"><?= esc_html__("Entra con CIE", 'wp-mim-eidgateway-connect') ?></span>
             </a>
         </div>
 <?php

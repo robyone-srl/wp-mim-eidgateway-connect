@@ -37,8 +37,8 @@ class R1EIDG_Settings
 
         add_submenu_page(
             'options-general.php',
-            esc_html__("Impostazioni di eID-Gateway", R1EIDG_TEXT_DOMAIN),
-            esc_html__("eID-Gateway", R1EIDG_TEXT_DOMAIN) . ($configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>'),
+            esc_html__("Impostazioni di eID-Gateway", 'wp-mim-eidgateway-connect'),
+            esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect') . ($configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>'),
             'manage_options',
             R1EIDG_Settings::PAGE,
             [get_class(), 'options_page_html']
@@ -69,13 +69,13 @@ class R1EIDG_Settings
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_incomplete_configuration',
-                esc_html__("La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori.", R1EIDG_TEXT_DOMAIN)
+                esc_html__("La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori.", 'wp-mim-eidgateway-connect')
             );
         } else if (!R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED)) {
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_eid_disabled',
-                esc_html__("L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.", R1EIDG_TEXT_DOMAIN),
+                esc_html__("L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.", 'wp-mim-eidgateway-connect'),
                 'warning'
             );
         }
@@ -116,21 +116,21 @@ class R1EIDG_Settings
 
         add_settings_section(
             $eid_section_id,
-            esc_html__("Funzionamento di eID-Gateway", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Funzionamento di eID-Gateway", 'wp-mim-eidgateway-connect'),
             [get_class(), 'eid_section_callback'],
             R1EIDG_Settings::PAGE
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_EID_ENABLED,
-            esc_html__("Abilita login con eID-Gateway", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Abilita login con eID-Gateway", 'wp-mim-eidgateway-connect'),
             'checkbox',
             $eid_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_EID_TEST,
-            esc_html__("Abilita modalità di test di eID-Gateway", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Abilita modalità di test di eID-Gateway", 'wp-mim-eidgateway-connect'),
             'checkbox',
             $eid_section_id,
         );
@@ -139,28 +139,28 @@ class R1EIDG_Settings
 
         add_settings_section(
             $school_section_id,
-            esc_html__("Dati della scuola", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Dati della scuola", 'wp-mim-eidgateway-connect'),
             [get_class(), 'school_section_callback'],
             R1EIDG_Settings::PAGE
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
-            esc_html__("Client ID fornito dal SIDI", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Client ID fornito dal SIDI", 'wp-mim-eidgateway-connect'),
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_SECRET,
-            esc_html__("Secret key fornita dal SIDI", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Secret key fornita dal SIDI", 'wp-mim-eidgateway-connect'),
             'text',
             $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
             R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE,
-            esc_html__("Codice meccanografico della scuola", R1EIDG_TEXT_DOMAIN),
+            esc_html__("Codice meccanografico della scuola", 'wp-mim-eidgateway-connect'),
             'text',
             $school_section_id,
         );
@@ -195,7 +195,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.", R1EIDG_TEXT_DOMAIN) ?>
+            <?= esc_html__("Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }
@@ -207,7 +207,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Gestisci le impostazioni generali", R1EIDG_TEXT_DOMAIN) ?>
+            <?= esc_html__("Gestisci le impostazioni generali", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }

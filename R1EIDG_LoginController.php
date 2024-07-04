@@ -45,10 +45,10 @@ class R1EIDG_LoginController
         $token_verification_response = wp_remote_get(R1EIDG_GatewayURLs::verify_url($token));
 
         if (is_wp_error($token_verification_response))
-            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Errore nella verifica del token", R1EIDG_TEXT_DOMAIN));
+            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Errore nella verifica del token", 'wp-mim-eidgateway-connect'));
 
         if ($token_verification_response['response']['code'] != 204)
-            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Token non valido", R1EIDG_TEXT_DOMAIN));
+            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Token non valido", 'wp-mim-eidgateway-connect'));
 
         // Extract the fiscal number from the token
         $payload = R1EIDG_LoginController::decode_jwt($token);
@@ -65,7 +65,7 @@ class R1EIDG_LoginController
         );
 
         if (empty($users))
-            R1EIDG_LoginController::set_login_error_and_die(esc_html__("L'utente non è registrato.", R1EIDG_TEXT_DOMAIN));
+            R1EIDG_LoginController::set_login_error_and_die(esc_html__("L'utente non è registrato.", 'wp-mim-eidgateway-connect'));
 
         // Log in the found user
         nocache_headers();
