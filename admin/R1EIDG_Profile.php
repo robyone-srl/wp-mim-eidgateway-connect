@@ -9,13 +9,19 @@ class R1EIDG_Profile
 
     static function init()
     {
+        // register actions to show and save the fiscal number field in user profile
         add_action('show_user_profile', [get_class(), 'add_user_fields']);
         add_action('edit_user_profile', [get_class(), 'add_user_fields']);
 
         add_action('edit_user_profile_update', [get_class(), 'save_user_fields']);
         add_action('personal_options_update', [get_class(), 'save_user_fields']);
 
+        // register action to show the errors
         add_action('admin_notices', [get_class(), 'print_errors']);
+
+        // register fiscal number column in user list
+        add_filter('manage_users_columns', [get_class(), 'add_fiscal_number_column']);
+        add_action('manage_users_custom_column', [get_class(), 'manage_fiscal_number_column'], 10, 3);
     }
 
     /**
@@ -35,7 +41,7 @@ class R1EIDG_Profile
 ?>
         <table class="form-table">
             <tr>
-                <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale'); ?></label></th>
+                <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect'); ?></label></th>
                 <td>
                     <input type="text" name="codice_fiscale" id="codice_fiscale" value="<?= esc_attr($fiscal_number); ?>" />
                 </td>
@@ -69,7 +75,7 @@ class R1EIDG_Profile
         );
 
         if (!empty($users) && $users[0]->ID != $user_id) {
-            R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato."));
+            R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
             return;
         }
 
@@ -85,6 +91,10 @@ class R1EIDG_Profile
         return is_super_admin() && current_user_can('edit_user', $user_id);
     }
 
+    /**
+     * Adds an error that will be displayed the next time the page loads (namely, after saving the user)
+     * @param string $message the message to display
+     */
     static function add_error($message)
     {
         $messages = get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [];
@@ -92,6 +102,9 @@ class R1EIDG_Profile
         set_transient(R1EIDG_Profile::TRANSIENT_NAME, $messages);
     }
 
+    /**
+     * Callback for admin_notice to display the stored errors.
+     */
     static function print_errors()
     {
         foreach (get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [] as $message) {
@@ -103,5 +116,27 @@ class R1EIDG_Profile
         }
 
         delete_transient(R1EIDG_Profile::TRANSIENT_NAME);
+    }
+
+    /**
+     * Callback for manage_users_columns to add fiscal number column
+     */
+    static function add_fiscal_number_column($columns)
+    {
+        if (!is_super_admin())
+            return;
+
+        return array_merge($columns, ['codice_fiscale' => esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect')]);
+    }
+
+    /**
+     * Callback for manage_users_custom_column to fill fiscal number column
+     */
+    static function manage_fiscal_number_column($val, $column_name, $user_id)
+    {
+        if ($column_name != 'codice_fiscale')
+            return;
+
+        return esc_html__(get_user_meta($user_id, 'codice_fiscale', true));
     }
 }
