@@ -28,12 +28,16 @@ require_once __DIR__ . '/R1EIDG_GatewayURLs.php';
 require_once __DIR__ . '/admin/R1EIDG_Settings.php';
 require_once __DIR__ . '/admin/R1EIDG_Profile.php';
 
-// Initialize UI (login buttons) and settings
-R1EIDG_UI::init();
+add_action('init', 'R1EIDG_init');
+function R1EIDG_init()
+{
+    // Initialize UI (login buttons), settings and additional profile fields
+    R1EIDG_UI::init();
 
-if (is_admin()) {
-    R1EIDG_Settings::init();
-    R1EIDG_Profile::init();
+    if (is_admin()) {
+        R1EIDG_Settings::init();
+        R1EIDG_Profile::init();
+    }
 }
 
 // Register routes

@@ -9,6 +9,9 @@ class R1EIDG_Profile
 
     static function init()
     {
+        if (!current_user_can('edit_users'))
+            return;
+
         // register actions to show and save the fiscal number field in user profile
         add_action('show_user_profile', [get_class(), 'add_user_fields']);
         add_action('edit_user_profile', [get_class(), 'add_user_fields']);
@@ -33,10 +36,6 @@ class R1EIDG_Profile
      */
     static function add_user_fields($user)
     {
-        if (!R1EIDG_Profile::can_edit_eid_user_fields($user->ID)) {
-            return;
-        }
-
         $fiscal_number = get_user_meta($user->ID, 'codice_fiscale', true);
 ?>
         <table class="form-table">
@@ -59,10 +58,6 @@ class R1EIDG_Profile
             return;
         }
 
-        if (!R1EIDG_Profile::can_edit_eid_user_fields($user_id)) {
-            return;
-        }
-
         $new_fiscal_number = strtoupper(trim($_POST['codice_fiscale']));
 
         //check if other users already have this fiscal number
@@ -80,15 +75,6 @@ class R1EIDG_Profile
         }
 
         update_user_meta($user_id, 'codice_fiscale', $new_fiscal_number);
-    }
-
-    /**
-     * Check if the logged user should be able to modify user data related to eID-Gateway (the fiscal number).
-     * @param mixed $user_id the user id of the user that is being modified
-     */
-    static function can_edit_eid_user_fields($user_id): bool
-    {
-        return is_super_admin() && current_user_can('edit_user', $user_id);
     }
 
     /**
