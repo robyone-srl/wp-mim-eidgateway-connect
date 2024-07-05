@@ -5,6 +5,8 @@
  */
 class R1EIDG_Profile
 {
+    const TRANSIENT_NAME = 'r1eidg_profile_messages';
+
     static function init()
     {
         add_action('show_user_profile', [get_class(), 'add_user_fields']);
@@ -12,6 +14,8 @@ class R1EIDG_Profile
 
         add_action('edit_user_profile_update', [get_class(), 'save_user_fields']);
         add_action('personal_options_update', [get_class(), 'save_user_fields']);
+
+        add_action('admin_notices', [get_class(), 'print_errors']);
     }
 
     /**
@@ -37,7 +41,7 @@ class R1EIDG_Profile
                 </td>
             </tr>
         </table>
-<?php
+        <?php
     }
 
     /**
@@ -54,6 +58,21 @@ class R1EIDG_Profile
         }
 
         $new_fiscal_number = strtoupper(trim($_POST['codice_fiscale']));
+
+        //check if other users already have this fiscal number
+        $users = get_users(
+            [
+                'meta_key' => 'codice_fiscale',
+                'meta_value' => $new_fiscal_number,
+                'number' => 1
+            ]
+        );
+
+        if (!empty($users) && $users[0]->ID != $user_id) {
+            R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato."));
+            return;
+        }
+
         update_user_meta($user_id, 'codice_fiscale', $new_fiscal_number);
     }
 
@@ -61,7 +80,28 @@ class R1EIDG_Profile
      * Check if the logged user should be able to modify user data related to eID-Gateway (the fiscal number).
      * @param mixed $user_id the user id of the user that is being modified
      */
-    static function can_edit_eid_user_fields($user_id) : bool{
+    static function can_edit_eid_user_fields($user_id): bool
+    {
         return is_super_admin() && current_user_can('edit_user', $user_id);
+    }
+
+    static function add_error($message)
+    {
+        $messages = get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [];
+        $messages[] = $message;
+        set_transient(R1EIDG_Profile::TRANSIENT_NAME, $messages);
+    }
+
+    static function print_errors()
+    {
+        foreach (get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [] as $message) {
+        ?>
+            <div class="error">
+                <p><?= $message ?></p>
+            </div>
+<?php
+        }
+
+        delete_transient(R1EIDG_Profile::TRANSIENT_NAME);
     }
 }

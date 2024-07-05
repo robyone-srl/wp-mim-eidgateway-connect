@@ -56,12 +56,11 @@ class R1EIDG_LoginController
 
         // Search for users that have the received fiscal number
         $users = get_users(
-            array(
+            [
                 'meta_key' => 'codice_fiscale',
                 'meta_value' => $fiscal_number,
-                'number' => 1,
-                'count_total' => false,
-            )
+                'number' => 1
+            ]
         );
 
         if (empty($users))
