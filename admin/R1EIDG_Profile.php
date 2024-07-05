@@ -40,9 +40,10 @@ class R1EIDG_Profile
 ?>
         <table class="form-table">
             <tr>
-                <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect'); ?></label></th>
+                <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect') ?></label></th>
                 <td>
                     <input type="text" name="codice_fiscale" id="codice_fiscale" value="<?= esc_attr($fiscal_number); ?>" />
+                    <p class="description"><?= esc_html__("Il codice fiscale viene usato per l'accesso con SPID e CIE tramite eID-Gateway.", 'wp-mim-eidgateway-connect') ?></p>
                 </td>
             </tr>
         </table>
@@ -60,18 +61,25 @@ class R1EIDG_Profile
 
         $new_fiscal_number = strtoupper(trim($_POST['codice_fiscale']));
 
-        //check if other users already have this fiscal number
-        $users = get_users(
-            [
-                'meta_key' => 'codice_fiscale',
-                'meta_value' => $new_fiscal_number,
-                'number' => 1
-            ]
-        );
+        if ($new_fiscal_number) {
+            //check if other users already have this fiscal number
+            $users = get_users(
+                [
+                    'meta_key' => 'codice_fiscale',
+                    'meta_value' => $new_fiscal_number,
+                    'number' => 1
+                ]
+            );
 
-        if (!empty($users) && $users[0]->ID != $user_id) {
-            R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
-            return;
+            if (!empty($users) && $users[0]->ID != $user_id) {
+                R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
+                return;
+            }
+
+            if (!preg_match('/^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}[a-zA-Z]{1}[0-9]{3}[a-zA-Z]{1}$/i', $new_fiscal_number)) {
+                R1EIDG_Profile::add_error(esc_html__("Il formato del codice fiscale non è valido. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
+                return;
+            }
         }
 
         update_user_meta($user_id, 'codice_fiscale', $new_fiscal_number);
