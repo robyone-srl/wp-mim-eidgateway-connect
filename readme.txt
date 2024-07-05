@@ -23,6 +23,8 @@ Una volta registrato il servizio, si ottiene un Client ID, da utilizzare della c
 
 Per ogni utente che desideri possa accedere con eID-Gateway, devi registrare il suo codice fiscale.
 
+Solo gli utenti amministratori che hanno il permesso di modificare gli utenti ("edit_user") possono modificare i codici fiscali.
+
 1. Accedi all'elenco degli utenti attraverso il menù laterale alla voce "Utenti" oppure "Utenti/Persone".
 2. Apri la pagina del profilo dell'utente interessato.
 3. Inserisci il suo codice fiscale nel relativo campo.
