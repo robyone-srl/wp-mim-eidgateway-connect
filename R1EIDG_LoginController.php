@@ -14,12 +14,12 @@ class R1EIDG_LoginController
     {
         register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_START_LOGIN, [
             'methods'  => WP_REST_Server::READABLE,
-            'callback' => [$this, "handle_start_login"],
+            'callback' => [$this, "handle_start_login_callback"],
         ]);
 
         register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN . '(?P<token>)', [
             'methods'  => WP_REST_Server::READABLE,
-            'callback' => [$this, "handle_login"],
+            'callback' => [$this, "handle_login_callback"],
         ]);
     }
 
@@ -27,7 +27,7 @@ class R1EIDG_LoginController
      * Handles the request to start the login, by redirecting to eID-Gateway. The request can have a
      * redirect_to parameter, that specifies where the user will be redirected after the login.
      */
-    function handle_start_login($request)
+    function handle_start_login_callback($request)
     {
         $redirect_to_after_login = $request['redirect_to'] ?? null;
         wp_redirect(R1EIDG_GatewayURLs::authenticate_url($redirect_to_after_login));
@@ -37,7 +37,7 @@ class R1EIDG_LoginController
     /**
      * Handles the login request, after being redirected from eID-Gateway, logging in the user.
      */
-    function handle_login($request)
+    function handle_login_callback($request)
     {
         $token = $request['token'];
 
@@ -78,7 +78,7 @@ class R1EIDG_LoginController
     /**
      * Sets a transient message and redirects to the login screen, where the transient message will be printed.
      */
-    static function set_login_error_and_die($message)
+    private static function set_login_error_and_die($message)
     {
         set_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME, $message);
         wp_redirect('/wp-login.php');
@@ -89,7 +89,7 @@ class R1EIDG_LoginController
      * Decodes the JWT token.
      * @return array Deserialized JWT payload
      */
-    static function decode_jwt($token)
+    private static function decode_jwt($token)
     {
         list(, $base64UrlPayload,) = explode('.', $token);
         $payload = base64_decode($base64UrlPayload);

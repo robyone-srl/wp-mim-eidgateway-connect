@@ -20,15 +20,15 @@ class R1EIDG_Settings
      */
     static function init()
     {
-        add_action('admin_init', [get_class(), 'init_settings']);
-        add_action('admin_menu', [get_class(), 'init_options_page']);
-        add_filter('plugin_action_links_wp-mim-eidgateway-connect/wp-mim-eidgateway-connect.php', [get_class(), 'init_options_link']);
+        add_action('admin_init', [get_class(), 'init_settings_callback']);
+        add_action('admin_menu', [get_class(), 'init_options_page_callback']);
+        add_filter('plugin_action_links_wp-mim-eidgateway-connect/wp-mim-eidgateway-connect.php', [get_class(), 'init_options_link_callback']);
     }
 
     /**
      * Callback for admin_menu to add the menu page.
      */
-    static function init_options_page()
+    static function init_options_page_callback()
     {
         $configuration_complete = R1EIDG_Settings::is_configuration_complete();
 
@@ -38,14 +38,14 @@ class R1EIDG_Settings
             esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect') . ($configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>'),
             'manage_options',
             R1EIDG_Settings::PAGE,
-            [get_class(), 'options_page_html']
+            [get_class(), 'options_page_html_callback']
         );
     }
 
     /**
      * Callback for plugin_action_links_... to add the settings link to the plugin entry in plugins page.
      */
-    static function init_options_link($links)
+    static function init_options_link_callback($links)
     {
         $settings_link = '<a href="' . menu_page_url(R1EIDG_Settings::PAGE, false) . '">' . __('Settings') . '</a>';
         array_push($links, $settings_link);
@@ -55,7 +55,7 @@ class R1EIDG_Settings
     /**
      * Callback to draw the html page
      */
-    static function options_page_html()
+    static function options_page_html_callback()
     {
         // check user capabilities
         if (!current_user_can('manage_options')) {
@@ -99,7 +99,7 @@ class R1EIDG_Settings
     /**
      * Callback for admin_init for initializing settings.
      */
-    static function init_settings()
+    static function init_settings_callback()
     {
         register_setting(
             R1EIDG_Settings::PAGE,

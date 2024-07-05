@@ -17,15 +17,15 @@ class R1EIDG_UI
      */
     static function init()
     {
-        add_action('login_form', [get_class(), 'draw_login_button']);
-        add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode']);
-        add_filter('wp_login_errors', [get_class(), 'print_login_errors']);
+        add_action('login_form', [get_class(), 'draw_login_button_callback']);
+        add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode_callback']);
+        add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
     }
 
     /**
      * Callback for wp_login_errors, that prints then deletes transient messages that have been set by the plugin.
      */
-    static function print_login_errors($errors)
+    static function print_login_errors_callback($errors)
     {
         $login_error = get_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
         delete_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
@@ -42,14 +42,14 @@ class R1EIDG_UI
      * @param array $atts Array of attributes. Supports a "size" optional attribute, which can be any of the constants that start with "R1EIDG_UI::BUTTON_SIZE_",
      * and a "redirect_to" optional attribute, which specifies where the user will be redirected after the login.
      */
-    static function draw_login_button_from_shortcode($atts)
+    static function draw_login_button_from_shortcode_callback($atts)
     {
         $atts = shortcode_atts([
             'size' => R1EIDG_UI::BUTTON_SIZE_M,
             'redirect_to' => null,
         ], $atts);
 
-        R1EIDG_UI::draw_login_button($atts['size'], $atts['redirect_to']);
+        R1EIDG_UI::draw_login_button_callback($atts['size'], $atts['redirect_to']);
     }
 
     /**
@@ -58,7 +58,7 @@ class R1EIDG_UI
      * @param string $size Buttons size. Can be any of R1EIDG_UI::BUTTON_SIZE_*
      * @param string $redirect_to Where to redirect the user after login. If not set, user will be redirected to the admin page.
      */
-    static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
+    static function draw_login_button_callback($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
     {
         $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
         if (!$eid_enabled)
