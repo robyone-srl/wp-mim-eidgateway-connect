@@ -104,7 +104,7 @@ class R1EIDG_Profile
         if ($column_name != 'codice_fiscale')
             return;
 
-        return esc_html__(get_user_meta($user_id, 'codice_fiscale', true));
+        return '<span style="font-family:monospace">' . esc_html__(get_user_meta($user_id, 'codice_fiscale', true)) . '</span>';
     }
 
     /**
