@@ -42,7 +42,7 @@ Una volta inseriti i codici fiscali, configura il plugin:
 3. Abilita la spunta su "Abilita login con eID-Gateway".
 4. Salva con l'apposito pulsante.
 
-Ora, gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare l'accesso con SPID, CIE o eIDAS. I pulsanti di login appariranno sotto al form di login di WordPress.
+Ora, gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare l'accesso con SPID, CIE o eIDAS. I pulsanti "Entra con SPID" e "Entra con CIE" appariranno sotto al form di login di WordPress.
 
 == Installation ==
 [todo]
