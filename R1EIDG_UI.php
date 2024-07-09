@@ -20,6 +20,12 @@ class R1EIDG_UI
         add_action('login_form', [get_class(), 'draw_login_button_callback']);
         add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode_callback']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
+
+        // TODO: option to show login buttons
+        if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php') {
+            // A JavaScript script will position the buttons in the rigt place
+            echo do_shortcode('[spid_login_button]');
+        }
     }
 
     /**
@@ -94,7 +100,7 @@ class R1EIDG_UI
         wp_enqueue_script(
             'R1EIDG_login_ui',
             plugins_url('public/js/login-ui.js', __FILE__),
-            [],
+            ['jquery'],
             R1EIDG_VERSION
         );
 
@@ -104,8 +110,8 @@ class R1EIDG_UI
             [],
             R1EIDG_VERSION
         );
-    ?>
-        <div class="R1EIDG-wrapper">
+?>
+        <div class="R1EIDG-wrapper" style="display: none;">
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
                 <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", 'wp-mim-eidgateway-connect') ?></span>
