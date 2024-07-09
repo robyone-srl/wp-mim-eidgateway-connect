@@ -1,19 +1,25 @@
-/* Since this plugin will often be used in the https://github.com/italia/design-scuole-wordpress-theme theme, which includes a custom login form,
- this script places the SPID and CIE buttons near that login form. */
+/* This script places the buttons in the right prace of the login form. */
 
 jQuery(document).on("ready", function () {
     let eid_wrapper = jQuery(".R1EIDG-wrapper");
-    
-    let italia_login_form = jQuery(".access-login-form"); // login form of the https://github.com/italia/design-scuole-wordpress-theme theme
-    let wp_login_form = jQuery("#loginform");
 
-    if(italia_login_form.length)
+    let italia_login_form = jQuery(".access-login-form"); // login form of the https://github.com/italia/design-scuole-wordpress-theme theme
+    let wp_login_form = jQuery("#loginform"); // WordPress login form
+
+    if (italia_login_form.length) {
         italia_login_form.before(eid_wrapper);
-    else if(wp_login_form.length){
+        eid_wrapper.show();
+    }
+    else if (wp_login_form.length) {
         wp_login_form.append(eid_wrapper);
+        eid_wrapper.show();
+    }
+    else {
+        eid_wrapper.remove();
     }
 
-    eid_wrapper.show();
+    if(eid_wrapper.data("hide-login"))
+        italia_login_form.remove();
 })
 function r1eidg_load_login_buttons() {
 }

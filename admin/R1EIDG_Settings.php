@@ -9,6 +9,8 @@ class R1EIDG_Settings
     const OPTION_NAME = R1EIDG_Settings::PAGE . '_options';
 
     const SETTING_EID_ENABLED = R1EIDG_Settings::PAGE . '_eid_enabled';
+    const SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC = R1EIDG_Settings::PAGE . '_school_theme_show_in_public';
+    const SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM = R1EIDG_Settings::PAGE . '_school_theme_hide_login_form';
     const SETTING_EID_TEST = R1EIDG_Settings::PAGE . '_eid_test';
 
     const SETTING_SCHOOL_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
@@ -108,6 +110,7 @@ class R1EIDG_Settings
 
         $eid_section_id = R1EIDG_Settings::PAGE . '_eid_section';
         $school_section_id = R1EIDG_Settings::PAGE . '_school_section';
+        $school_theme_section_id = R1EIDG_Settings::PAGE . '_school_theme_section';
 
         // eID-Gateway settings
 
@@ -119,17 +122,17 @@ class R1EIDG_Settings
         );
 
         R1EIDG_Settings::add_field(
+            $eid_section_id,
             R1EIDG_Settings::SETTING_EID_ENABLED,
             esc_html__("Abilita login con eID-Gateway", 'wp-mim-eidgateway-connect'),
             'checkbox',
-            $eid_section_id,
         );
 
         R1EIDG_Settings::add_field(
+            $eid_section_id,
             R1EIDG_Settings::SETTING_EID_TEST,
             esc_html__("Abilita modalità di test di eID-Gateway", 'wp-mim-eidgateway-connect'),
             'checkbox',
-            $eid_section_id,
         );
 
         // School settings
@@ -142,35 +145,64 @@ class R1EIDG_Settings
         );
 
         R1EIDG_Settings::add_field(
+            $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
             esc_html__("Client ID fornito dal SIDI", 'wp-mim-eidgateway-connect'),
             'text',
-            $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
+            $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_SECRET,
             esc_html__("Secret key fornita dal SIDI", 'wp-mim-eidgateway-connect'),
             'text',
-            $school_section_id,
         );
 
         R1EIDG_Settings::add_field(
+            $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE,
             esc_html__("Codice meccanografico della scuola", 'wp-mim-eidgateway-connect'),
             'text',
-            $school_section_id,
+        );
+
+        // School theme settings
+
+        add_settings_section(
+            $school_theme_section_id,
+            esc_html__("Integrazione con il tema scuole", 'wp-mim-eidgateway-connect'),
+            [get_class(), 'school_theme_section_callback'],
+            R1EIDG_Settings::PAGE
+        );
+
+        R1EIDG_Settings::add_field(
+            $school_theme_section_id,
+            R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC,
+            esc_html__("Mostra i pulsanti di login anche nella parte pubblica", 'wp-mim-eidgateway-connect'),
+            'checkbox',
+            esc_html__("Normalmente, i pulsanti di login con SPID e CIE vengono visualizzati solo nella pagina di login di WordPress. Se si utilizza il tema Design Scuole Italia, è consigliabile abilitare questa opzione, in modo che i pulsanti di login vengano mostrati anche nella parte pubblica, nel pannello che appare facendo clic su \"Accedi\" nella barra superiore.", 'wp-mim-eidgateway-connect'),
+        );
+
+        R1EIDG_Settings::add_field(
+            $school_theme_section_id,
+            R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM,
+            esc_html__("Nascondi il form di login del tema", 'wp-mim-eidgateway-connect'),
+            'checkbox',
+            sprintf(
+                esc_html__('Funziona solo se l\'opzione "%s" è abilitata. Abilitando questa opzione, il form di login del tema Design Scuole Italia viene nascosto, permettendo di accedere solo con SPID o CIE.', 'wp-mim-eidgateway-connect'),
+                esc_html__("Mostra i pulsanti di login anche nella parte pubblica", 'wp-mim-eidgateway-connect')
+            ),
         );
     }
 
     /**
      * Adds a text field
-     * @param mixed $field_id The id of the field, should be prefixed to be unique.
-     * @param mixed $field_title Field title that will be shown to the user.
-     * @param mixed $type Will be used as type attribute in the input element.
-     * @param mixed $section_id Id of the section where the field must appear.
+     * @param string $section_id Id of the section where the field must appear.
+     * @param string $field_id The id of the field, should be prefixed to be unique.
+     * @param string $field_title Field title that will be shown to the user.
+     * @param string $type Used as type attribute in the input element.
+     * @param string|null $description Shown near the field.
      */
-    private static function add_field($field_id, $field_title, $type, $section_id)
+    private static function add_field($section_id, $field_id, $field_title, $type, $description = null)
     {
         add_settings_field(
             $field_id,
@@ -180,7 +212,8 @@ class R1EIDG_Settings
             $section_id,
             [
                 'label_for' => $field_id,
-                'type' => $type
+                'type' => $type ?? 'text',
+                'description' => $description
             ]
         );
     }
@@ -193,6 +226,18 @@ class R1EIDG_Settings
     ?>
         <p id="<?= $args['id'] ?>">
             <?= esc_html__("Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.", 'wp-mim-eidgateway-connect') ?>
+        </p>
+    <?php
+    }
+
+    /**
+     * Callback for drawing the school theme settings section header
+     */
+    static function school_theme_section_callback($args)
+    {
+    ?>
+        <p id="<?= $args['id'] ?>">
+            <?= esc_html__("Se utilizzi il tema Design Scuole Italia, puoi usare queste impostazioni per integrare meglio il login con SPID e CIE al tema. Se invece non utilizzi tale tema, non attivare queste impostazioni perché potrebbero comportare effetti indesiderati.", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }
@@ -235,7 +280,12 @@ class R1EIDG_Settings
 
     ?>
         <input type="<?= $type ?>" name="<?= R1EIDG_Settings::OPTION_NAME . '[' . $args['label_for'] . ']' ?>" <?= $attributes ?> />
+        <?php
+        if ($description = $args['description']) {
+        ?>
+            <p class="description"><?= $description ?></p>
 <?php
+        }
     }
 
     /**

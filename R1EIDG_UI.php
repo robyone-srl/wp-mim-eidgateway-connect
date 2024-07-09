@@ -18,13 +18,13 @@ class R1EIDG_UI
     static function init()
     {
         add_action('login_form', [get_class(), 'draw_login_button_callback']);
-        add_shortcode('spid_login_button', [get_class(), 'draw_login_button_from_shortcode_callback']);
+        add_shortcode('eid_gateway_buttons', [get_class(), 'draw_login_button_from_shortcode_callback']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
 
         // TODO: option to show login buttons
-        if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php') {
+        if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php' && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC)) {
             // A JavaScript script will position the buttons in the rigt place
-            echo do_shortcode('[spid_login_button]');
+            echo do_shortcode('[eid_gateway_buttons]');
         }
     }
 
@@ -43,7 +43,7 @@ class R1EIDG_UI
     }
 
     /**
-     * Callback for the "spid_login_button" shortcode.
+     * Callback for the "eid_gateway_buttons" shortcode.
      * 
      * @param array $atts Array of attributes. Supports a "size" optional attribute, which can be any of the constants that start with "R1EIDG_UI::BUTTON_SIZE_",
      * and a "redirect_to" optional attribute, which specifies where the user will be redirected after the login.
@@ -111,7 +111,8 @@ class R1EIDG_UI
             R1EIDG_VERSION
         );
 ?>
-        <div class="R1EIDG-wrapper" style="display: none;">
+        <div class="R1EIDG-wrapper" style="display: none;" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
+
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
                 <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", 'wp-mim-eidgateway-connect') ?></span>
