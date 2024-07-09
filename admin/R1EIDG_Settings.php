@@ -32,12 +32,11 @@ class R1EIDG_Settings
      */
     static function init_options_page_callback()
     {
-        $configuration_complete = R1EIDG_Settings::is_configuration_complete();
 
         add_submenu_page(
             'options-general.php',
             esc_html__("Impostazioni di eID-Gateway", 'wp-mim-eidgateway-connect'),
-            esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect') . ($configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>'),
+            esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect') . R1EIDG_Settings::configuration_complete_badge(),
             'manage_options',
             R1EIDG_Settings::PAGE,
             [get_class(), 'options_page_html_callback']
@@ -169,7 +168,7 @@ class R1EIDG_Settings
 
         add_settings_section(
             $school_theme_section_id,
-            esc_html__("Integrazione con il tema scuole", 'wp-mim-eidgateway-connect'),
+            esc_html__("Integrazione con il tema Design Scuole Italia", 'wp-mim-eidgateway-connect'),
             [get_class(), 'school_theme_section_callback'],
             R1EIDG_Settings::PAGE
         );
@@ -237,7 +236,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Se utilizzi il tema Design Scuole Italia, puoi usare queste impostazioni per integrare meglio il login con SPID e CIE al tema. Se invece non utilizzi tale tema, non attivare queste impostazioni perché potrebbero comportare effetti indesiderati.", 'wp-mim-eidgateway-connect') ?>
+            <?= esc_html__("Se utilizzi il tema Design Scuole Italia, puoi usare queste impostazioni per integrare meglio il login con SPID e CIE al tema. Se invece non utilizzi tale tema, non attivare le seguenti impostazioni perché potrebbero comportare effetti indesiderati.", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }
@@ -296,6 +295,15 @@ class R1EIDG_Settings
     {
         return R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID)
             && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE);
+    }
+
+    /**
+     * Callback for admin_menu to add the menu page.
+     */
+    static function configuration_complete_badge(): string
+    {
+        $configuration_complete = R1EIDG_Settings::is_configuration_complete();
+        return $configuration_complete ?  '' : ' <span class="awaiting-mod">!</span>';
     }
 
     /**
