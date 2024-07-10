@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       Login con eID-Gateway
  * Description:       Questo plugin non ufficiale facilita il processo di integrazione del sito web scolastico realizzato con WordPress al componente eID-Gateway messo a disposizione dal MIM.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.0
  * Requires PHP:      8.0
  * Author:            Robyone S.r.l.

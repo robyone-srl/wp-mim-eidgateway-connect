@@ -12,8 +12,6 @@ class R1EIDG_GatewayURLs
     {
         $eid_test = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_TEST);
 
-        return "http://robylogin.localhost"; //temporary
-
         if ($eid_test)
             return "https://eid-test.istruzione.it/eid-gateway";
 
@@ -48,7 +46,7 @@ class R1EIDG_GatewayURLs
             'aggregate_ref_value' => $mechanographic_code
         ]);
 
-        return R1EIDG_GatewayURLs::base_url() . "/sp/authenticate.php?$query";
+        return R1EIDG_GatewayURLs::base_url() . "/sp/authenticate?$query";
     }
 
     /**
@@ -57,7 +55,7 @@ class R1EIDG_GatewayURLs
      */
     static function verify_url($token)
     {
-        return R1EIDG_GatewayURLs::base_url() . "/sp/token/verify.php?token=$token";
+        return R1EIDG_GatewayURLs::base_url() . "/sp/token/verify?token=$token";
     }
 
     /**

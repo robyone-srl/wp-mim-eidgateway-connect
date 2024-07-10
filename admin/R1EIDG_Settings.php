@@ -14,7 +14,6 @@ class R1EIDG_Settings
     const SETTING_EID_TEST = R1EIDG_Settings::PAGE . '_eid_test';
 
     const SETTING_SCHOOL_CLIENT_ID = R1EIDG_Settings::PAGE . '_school_client_id';
-    const SETTING_SCHOOL_SECRET = R1EIDG_Settings::PAGE . '_school_secret';
     const SETTING_SCHOOL_MECHANOGRAPHIC_CODE = R1EIDG_Settings::PAGE . '_school_mechanographic_code';
 
     /**
@@ -147,13 +146,6 @@ class R1EIDG_Settings
             $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
             esc_html__("Client ID fornito dal SIDI", 'wp-mim-eidgateway-connect'),
-            'text',
-        );
-
-        R1EIDG_Settings::add_field(
-            $school_section_id,
-            R1EIDG_Settings::SETTING_SCHOOL_SECRET,
-            esc_html__("Secret key fornita dal SIDI", 'wp-mim-eidgateway-connect'),
             'text',
         );
 

@@ -36,13 +36,14 @@ class R1EIDG_Profile
      */
     static function add_user_fields_callback($user)
     {
-        $fiscal_number = get_user_meta($user->ID, 'codice_fiscale', true);
+        if($user)
+            $fiscal_number = get_user_meta($user->ID, 'codice_fiscale', true);
 ?>
         <table class="form-table">
             <tr>
                 <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect') ?></label></th>
                 <td>
-                    <input type="text" name="codice_fiscale" id="codice_fiscale" value="<?= esc_attr($fiscal_number); ?>" />
+                    <input type="text" name="codice_fiscale" id="codice_fiscale" value="<?= esc_attr($fiscal_number ?? ''); ?>" />
                     <p class="description"><?= esc_html__("Il codice fiscale viene usato per l'accesso con SPID e CIE tramite eID-Gateway.", 'wp-mim-eidgateway-connect') ?></p>
                 </td>
             </tr>

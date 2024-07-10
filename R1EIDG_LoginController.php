@@ -17,8 +17,8 @@ class R1EIDG_LoginController
             'callback' => [$this, "handle_start_login_callback"],
         ]);
 
-        register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN . '(?P<token>)', [
-            'methods'  => WP_REST_Server::READABLE,
+        register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN, [
+            'methods'  => WP_REST_Server::CREATABLE,
             'callback' => [$this, "handle_login_callback"],
         ]);
     }
