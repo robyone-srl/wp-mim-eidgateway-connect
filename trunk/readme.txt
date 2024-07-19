@@ -2,7 +2,7 @@
 Contributors: robyone-srl
 Tags: spid,cie,mim,scuola,eid
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 8.0
 Stable tag: trunk
 License: GPL v2 or later
@@ -13,11 +13,11 @@ Accesso al sito scolastico con eID-Gateway (SPID, CIE e eIDAS)
 == Description ==
 Questo plugin non ufficiale facilita il processo di integrazione del sito web scolastico realizzato con WordPress al componente eID-Gateway messo a disposizione dal Ministero dell'Istruzione e del Merito (MIM). In questo modo, gli utenti del sito per cui è stato impostato un codice fiscale riusciranno ad accedere con SPID, CIE o eIDAS.
 
+# Aggregazione al Gateway delle Identità
+
 Per utilizzare il plugin, è necessario che la scuola abbia completato con successo la *richiesta di aggregazione* al [Gateway delle Identità](https://www.istruzione.it/spid-cie/scuole.html). Puoi effettuare questa procedura dal portale SIDI, nella sezione "Gestione aggregazione scuola" (possono accedervi il dirigente scolastico e il DSGA). La guida completa si trova [a questa pagina](https://www.istruzione.it/responsabile-transizione-digitale/scuole.html), sotto la sezione "Manuale utente per l’adesione al Gateway delle Identità".
 
 Sempre in "Gestione aggregazione scuola" del portale SIDI, nella scheda "Gestione client", si può ottenere un _Client ID_ da utilizzare nelle impostazioni del plugin. Il _redirect url_ da impostare è "https://<indirizzo del sito>/wp-json/eid-gateway/login".
-
-[Descrivere come fare]
 
 Una volta registrato il servizio, si ottiene un Client ID, da utilizzare della configurazione del plugin.
 

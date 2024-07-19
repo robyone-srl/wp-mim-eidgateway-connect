@@ -20,7 +20,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-const R1EIDG_VERSION = "1.0.0"; // for assets cache busting
+const R1EIDG_VERSION = "1.0.1"; // for assets cache busting
 
 require_once __DIR__ . '/R1EIDG_UI.php';
 require_once __DIR__ . '/R1EIDG_LoginController.php';
