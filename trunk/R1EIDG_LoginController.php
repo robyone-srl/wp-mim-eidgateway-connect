@@ -52,7 +52,10 @@ class R1EIDG_LoginController
 
         // Extract the fiscal number from the token
         $payload = R1EIDG_LoginController::decode_jwt($token);
-        $fiscal_number = strtoupper(trim($payload['fiscal_number']));
+        $fiscal_number = strtoupper(trim($payload['fiscal_number'] ?? ''));
+
+        if(!$fiscal_number)
+            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Codice non valido", 'wp-mim-eidgateway-connect'));
 
         // Search for users that have the received fiscal number
         $users = get_users(
