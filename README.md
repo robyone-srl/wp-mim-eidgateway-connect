@@ -11,5 +11,7 @@ Per ottenere la cartella ZIP contenente il plugin da caricare in WordPress, puoi
 - scaricare la release più recente, oppure
 - scaricare la repository e comprimere il contenuto della cartella `trunk` in una cartella compressa chiamata `wp-mim-eidgateway-connect.zip` (solo il contenuto, non la cartella).
 
-## Configurazione
+## Configurazione e utilizzo
 Per configurare il plugin, e per altre informazioni sul processo di aggregazione, puoi consultare il [file readme del plugin](trunk/readme.txt).
+
+Per inserire manualmente i pulsanti di login con SPID e CIE, puoi utilizzare lo shortcode `eid_gateway_buttons` (se usi il tema Design Scuole Italia, questa operazione non è necessaria).
