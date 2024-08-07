@@ -29,15 +29,16 @@ class R1EIDG_UI
     }
 
     /**
-     * Callback for wp_login_errors, that prints then deletes transient messages that have been set by the plugin.
+     * Callback for wp_login_errors, that adds to the login errors those errors that have been set by the plugin.
      */
     static function print_login_errors_callback($errors)
     {
-        $login_error = get_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
-        delete_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME);
+        $login_error = $_COOKIE[R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME] ?? false; // read the error message from the cookie
 
-        if ($login_error)
+        if ($login_error) {
+            setcookie(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME, ''); // delete the cookie
             $errors->add('access', $login_error);
+        }
 
         return $errors;
     }

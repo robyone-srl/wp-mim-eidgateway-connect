@@ -113,7 +113,7 @@ class R1EIDG_Profile
      */
     static function admin_notices_callback()
     {
-        foreach (get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [] as $message) {
+        foreach (get_transient(R1EIDG_Profile::get_error_transient_name()) ?: [] as $message) {
         ?>
             <div class="error">
                 <p><?= $message ?></p>
@@ -121,7 +121,7 @@ class R1EIDG_Profile
 <?php
         }
 
-        delete_transient(R1EIDG_Profile::TRANSIENT_NAME);
+        delete_transient(R1EIDG_Profile::get_error_transient_name());
     }
 
     /**
@@ -130,8 +130,17 @@ class R1EIDG_Profile
      */
     private static function add_error($message)
     {
-        $messages = get_transient(R1EIDG_Profile::TRANSIENT_NAME) ?: [];
+        $messages = get_transient(R1EIDG_Profile::get_error_transient_name()) ?: [];
         $messages[] = $message;
-        set_transient(R1EIDG_Profile::TRANSIENT_NAME, $messages);
+        set_transient(R1EIDG_Profile::get_error_transient_name(), $messages);
+    }
+    
+    /**
+     * Gets the name of the transient that stores errors to be displayed to the current user
+     * @return string the transient name
+     */
+    private static function get_error_transient_name()
+    {
+        return R1EIDG_Profile::TRANSIENT_NAME . '_' . get_current_user_id();
     }
 }

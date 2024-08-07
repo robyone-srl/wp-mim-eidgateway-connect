@@ -18,7 +18,7 @@ class R1EIDG_LoginController
         ]);
 
         register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN, [
-            'methods'  => WP_REST_Server::CREATABLE,
+            'methods'  => WP_REST_Server::READABLE,
             'callback' => [$this, "handle_login_callback"],
         ]);
     }
@@ -79,11 +79,11 @@ class R1EIDG_LoginController
     }
 
     /**
-     * Sets a transient message and redirects to the login screen, where the transient message will be printed.
+     * Sets a message cookie and redirects to the login screen, where the message cookie will be printed.
      */
     private static function set_login_error_and_die($message)
     {
-        set_transient(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME, $message);
+        setcookie(R1EIDG_UI::LOGIN_ERROR_TRANSIENT_NAME, $message, 0, '/');
         wp_redirect('/wp-login.php');
         exit();
     }
