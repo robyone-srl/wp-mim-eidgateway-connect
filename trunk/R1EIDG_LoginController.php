@@ -18,7 +18,7 @@ class R1EIDG_LoginController
         ]);
 
         register_rest_route(R1EIDG_ROUTE_NAMESPACE, '/' . R1EIDG_ROUTE_LOGIN, [
-            'methods'  => WP_REST_Server::READABLE,
+            'methods'  => WP_REST_Server::CREATABLE,
             'callback' => [$this, "handle_login_callback"],
         ]);
     }
