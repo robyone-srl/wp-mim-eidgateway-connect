@@ -116,11 +116,11 @@ class R1EIDG_UI
 
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text"><?= esc_html__("Entra con SPID", 'wp-mim-eidgateway-connect') ?></span>
+                <span class="italia-it-button-text"><?= esc_html__("Login with SPID", 'wp-mim-eidgateway-connect') ?></span>
             </a>
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid button-cie" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/Logo_CIE_ID.svg', __FILE__) ?>" /></span>
-                <span class="italia-it-button-text"><?= esc_html__("Entra con CIE", 'wp-mim-eidgateway-connect') ?></span>
+                <span class="italia-it-button-text"><?= esc_html__("Login with CIE", 'wp-mim-eidgateway-connect') ?></span>
             </a>
         </div>
 <?php

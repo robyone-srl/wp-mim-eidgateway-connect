@@ -34,7 +34,7 @@ class R1EIDG_Settings
 
         add_submenu_page(
             'options-general.php',
-            esc_html__("Impostazioni di eID-Gateway", 'wp-mim-eidgateway-connect'),
+            esc_html__("eID-Gateway settings", 'wp-mim-eidgateway-connect'),
             esc_html__("eID-Gateway", 'wp-mim-eidgateway-connect') . R1EIDG_Settings::configuration_complete_badge(),
             'manage_options',
             R1EIDG_Settings::PAGE,
@@ -66,13 +66,13 @@ class R1EIDG_Settings
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_incomplete_configuration',
-                esc_html__("La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori.", 'wp-mim-eidgateway-connect')
+                esc_html__("The configuration is incomplete. Client ID and mechanographic code are mandatory.", 'wp-mim-eidgateway-connect')
             );
         } else if (!R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED)) {
             add_settings_error(
                 R1EIDG_Settings::PAGE . '_messages',
                 R1EIDG_Settings::PAGE . '_eid_disabled',
-                esc_html__("L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto.", 'wp-mim-eidgateway-connect'),
+                esc_html__("Login with eID-Gateway is disabled. You can enable it with the settings below.", 'wp-mim-eidgateway-connect'),
                 'warning'
             );
         }
@@ -114,7 +114,7 @@ class R1EIDG_Settings
 
         add_settings_section(
             $eid_section_id,
-            esc_html__("Funzionamento di eID-Gateway", 'wp-mim-eidgateway-connect'),
+            esc_html__("eID-Gateway operation settings", 'wp-mim-eidgateway-connect'),
             [get_class(), 'eid_section_callback'],
             R1EIDG_Settings::PAGE
         );
@@ -122,14 +122,14 @@ class R1EIDG_Settings
         R1EIDG_Settings::add_field(
             $eid_section_id,
             R1EIDG_Settings::SETTING_EID_ENABLED,
-            esc_html__("Abilita login con eID-Gateway", 'wp-mim-eidgateway-connect'),
+            esc_html__("Enable login with eID-Gateway", 'wp-mim-eidgateway-connect'),
             'checkbox',
         );
 
         R1EIDG_Settings::add_field(
             $eid_section_id,
             R1EIDG_Settings::SETTING_EID_TEST,
-            esc_html__("Abilita modalità di test di eID-Gateway", 'wp-mim-eidgateway-connect'),
+            esc_html__("Enable eID-Gateway test mode", 'wp-mim-eidgateway-connect'),
             'checkbox',
         );
 
@@ -137,7 +137,7 @@ class R1EIDG_Settings
 
         add_settings_section(
             $school_section_id,
-            esc_html__("Dati della scuola", 'wp-mim-eidgateway-connect'),
+            esc_html__("School data", 'wp-mim-eidgateway-connect'),
             [get_class(), 'school_section_callback'],
             R1EIDG_Settings::PAGE
         );
@@ -145,14 +145,14 @@ class R1EIDG_Settings
         R1EIDG_Settings::add_field(
             $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID,
-            esc_html__("Client ID fornito dal SIDI", 'wp-mim-eidgateway-connect'),
+            esc_html__("Client ID provided by SIDI", 'wp-mim-eidgateway-connect'),
             'text',
         );
 
         R1EIDG_Settings::add_field(
             $school_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE,
-            esc_html__("Codice meccanografico della scuola", 'wp-mim-eidgateway-connect'),
+            esc_html__("School mechanographic code", 'wp-mim-eidgateway-connect'),
             'text',
         );
 
@@ -160,7 +160,7 @@ class R1EIDG_Settings
 
         add_settings_section(
             $school_theme_section_id,
-            esc_html__("Integrazione con il tema Design Scuole Italia", 'wp-mim-eidgateway-connect'),
+            esc_html__("Integration with Design Scuole Italia theme", 'wp-mim-eidgateway-connect'),
             [get_class(), 'school_theme_section_callback'],
             R1EIDG_Settings::PAGE
         );
@@ -168,20 +168,20 @@ class R1EIDG_Settings
         R1EIDG_Settings::add_field(
             $school_theme_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC,
-            esc_html__("Mostra i pulsanti di login anche nella parte pubblica", 'wp-mim-eidgateway-connect'),
+            esc_html__("Show login buttons in public part too", 'wp-mim-eidgateway-connect'),
             'checkbox',
-            esc_html__("Normalmente, i pulsanti di login con SPID e CIE vengono visualizzati solo nella pagina di login di WordPress. Se si utilizza il tema Design Scuole Italia, è consigliabile abilitare questa opzione, in modo che i pulsanti di login vengano mostrati anche nella parte pubblica, nel pannello che appare facendo clic su \"Accedi\" nella barra superiore.", 'wp-mim-eidgateway-connect'),
+            esc_html__("Normally, the SPID and CIE login buttons are displayed only on the WordPress login page. If you use the Design Scuole Italia theme, it is advisable to enable this option, so that the login buttons are also displayed in the public part, in the panel that appears by clicking on \"Login\" in the top bar.", 'wp-mim-eidgateway-connect'),
         );
 
         R1EIDG_Settings::add_field(
             $school_theme_section_id,
             R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM,
-            esc_html__("Nascondi il form di login del tema", 'wp-mim-eidgateway-connect'),
+            esc_html__("Hide theme login form", 'wp-mim-eidgateway-connect'),
             'checkbox',
             sprintf(
                 /* translators: %s: Name of the cited option */
-                esc_html__('Funziona solo se l\'opzione "%s" è abilitata. Abilitando questa opzione, il form di login del tema Design Scuole Italia viene nascosto, permettendo di accedere solo con SPID o CIE.', 'wp-mim-eidgateway-connect'),
-                esc_html__("Mostra i pulsanti di login anche nella parte pubblica", 'wp-mim-eidgateway-connect')
+                esc_html__("It only works if the \"%s\" option is enabled. By enabling this option, the Design Scuole Italia theme login form is hidden, allowing access only with SPID or CIE.", 'wp-mim-eidgateway-connect'),
+                esc_html__("Show login buttons in public part too", 'wp-mim-eidgateway-connect')
             ),
         );
     }
@@ -217,7 +217,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti.", 'wp-mim-eidgateway-connect') ?>
+            <?= esc_html__("After aggregating the school in the SIDI portal, enter the required data here.", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }
@@ -229,7 +229,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Se utilizzi il tema Design Scuole Italia, puoi usare queste impostazioni per integrare meglio il login con SPID e CIE al tema. Se invece non utilizzi tale tema, non attivare le seguenti impostazioni perché potrebbero comportare effetti indesiderati.", 'wp-mim-eidgateway-connect') ?>
+            <?= esc_html__("If you use the Design Scuole Italia theme, you can use these settings to better integrate the login with SPID and CIE to the theme. If you do not use this theme, do not activate the following settings because they may cause unwanted effects.", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }
@@ -241,7 +241,7 @@ class R1EIDG_Settings
     {
     ?>
         <p id="<?= $args['id'] ?>">
-            <?= esc_html__("Gestisci le impostazioni generali", 'wp-mim-eidgateway-connect') ?>
+            <?= esc_html__("Manage general settings", 'wp-mim-eidgateway-connect') ?>
         </p>
     <?php
     }

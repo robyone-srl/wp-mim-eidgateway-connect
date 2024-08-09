@@ -41,10 +41,10 @@ class R1EIDG_Profile
 ?>
         <table class="form-table">
             <tr>
-                <th><label for="codice_fiscale"><?= esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect') ?></label></th>
+                <th><label for="codice_fiscale"><?= esc_html__('Fiscal code', 'wp-mim-eidgateway-connect') ?></label></th>
                 <td>
                     <input type="text" name="codice_fiscale" id="codice_fiscale" value="<?= esc_attr($fiscal_number ?? ''); ?>" />
-                    <p class="description"><?= esc_html__("Il codice fiscale viene usato per l'accesso con SPID e CIE tramite eID-Gateway.", 'wp-mim-eidgateway-connect') ?></p>
+                    <p class="description"><?= esc_html__("The fiscal code is used for access with SPID and CIE through eID-Gateway.", 'wp-mim-eidgateway-connect') ?></p>
                 </td>
             </tr>
         </table>
@@ -73,12 +73,12 @@ class R1EIDG_Profile
             );
 
             if (!empty($users) && $users[0]->ID != $user_id) {
-                R1EIDG_Profile::add_error(esc_html__("Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
+                R1EIDG_Profile::add_error(esc_html__("Another user already has this fiscal code. The fiscal code has not been changed.", 'wp-mim-eidgateway-connect'));
                 return;
             }
 
             if (!preg_match('/^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}[a-zA-Z]{1}[0-9]{3}[a-zA-Z]{1}$/i', $new_fiscal_number)) {
-                R1EIDG_Profile::add_error(esc_html__("Il formato del codice fiscale non è valido. Il codice fiscale non è stato modificato.", 'wp-mim-eidgateway-connect'));
+                R1EIDG_Profile::add_error(esc_html__("The fiscal code is not in a valid format. The fiscal code has not been changed.", 'wp-mim-eidgateway-connect'));
                 return;
             }
         }
@@ -94,7 +94,7 @@ class R1EIDG_Profile
         if (!is_super_admin())
             return;
 
-        return array_merge($columns, ['codice_fiscale' => esc_html__('Codice fiscale', 'wp-mim-eidgateway-connect')]);
+        return array_merge($columns, ['codice_fiscale' => esc_html__('Another user already has this fiscal code. The fiscal code has not been changed.', 'wp-mim-eidgateway-connect')]);
     }
 
     /**

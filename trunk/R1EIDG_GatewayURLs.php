@@ -26,7 +26,7 @@ class R1EIDG_GatewayURLs
     static function authenticate_url($redirect_to_after_login = null)
     {
         if (!R1EIDG_Settings::is_configuration_complete())
-            throw new Exception(esc_html__("Configurazione accesso eID-Gateway incompleta", 'wp-mim-eidgateway-connect'));
+            throw new Exception(esc_html__("Incomplete eID-Gateway login configuration", 'wp-mim-eidgateway-connect'));
 
         $client_id = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_CLIENT_ID);
         $mechanographic_code = R1EIDG_Settings::get_setting(R1EIDG_Settings::SETTING_SCHOOL_MECHANOGRAPHIC_CODE);
