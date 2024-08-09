@@ -56,7 +56,8 @@ function R1EIDG_register_controllers()
 // Load translations
 function R1EIDG_load_translations()
 {
-    $plugin_rel_path = basename(dirname(__FILE__)) . '/languages';
-    load_plugin_textdomain('wp-mim-eidgateway-connect', false, $plugin_rel_path);
+    $plugin_rel_path = 'wp-mim-eidgateway-connect/languages';
+    $loaded = load_plugin_textdomain('wp-mim-eidgateway-connect', false, $plugin_rel_path);
+    echo $loaded;
 }
 add_action('plugins_loaded', 'R1EIDG_load_translations');

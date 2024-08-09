@@ -179,6 +179,7 @@ class R1EIDG_Settings
             esc_html__("Nascondi il form di login del tema", 'wp-mim-eidgateway-connect'),
             'checkbox',
             sprintf(
+                /* translators: %s: Name of the cited option */
                 esc_html__('Funziona solo se l\'opzione "%s" è abilitata. Abilitando questa opzione, il form di login del tema Design Scuole Italia viene nascosto, permettendo di accedere solo con SPID o CIE.', 'wp-mim-eidgateway-connect'),
                 esc_html__("Mostra i pulsanti di login anche nella parte pubblica", 'wp-mim-eidgateway-connect')
             ),

@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-08-09T15:05:28+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: wp-mim-eidgateway-connect\n"
+
+#: admin/R1EIDG_Profile.php:44
+#: admin/R1EIDG_Profile.php:97
+msgid "Codice fiscale"
+msgstr ""
+
+#: admin/R1EIDG_Profile.php:47
+msgid "Il codice fiscale viene usato per l'accesso con SPID e CIE tramite eID-Gateway."
+msgstr ""
+
+#: admin/R1EIDG_Profile.php:76
+msgid "Un altro utente ha già questo codice fiscale. Il codice fiscale non è stato modificato."
+msgstr ""
+
+#: admin/R1EIDG_Profile.php:81
+msgid "Il formato del codice fiscale non è valido. Il codice fiscale non è stato modificato."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:37
+msgid "Impostazioni di eID-Gateway"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:38
+msgid "eID-Gateway"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:69
+msgid "La configurazione è incompleta. Client ID e codice meccanografico sono obbligatori."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:75
+msgid "L'accesso con eID-Gateway è disabilitato. Puoi attivarlo con le impostazioni qui sotto."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:117
+msgid "Funzionamento di eID-Gateway"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:125
+msgid "Abilita login con eID-Gateway"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:132
+msgid "Abilita modalità di test di eID-Gateway"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:140
+msgid "Dati della scuola"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:148
+msgid "Client ID fornito dal SIDI"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:155
+msgid "Codice meccanografico della scuola"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:163
+msgid "Integrazione con il tema Design Scuole Italia"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:171
+#: admin/R1EIDG_Settings.php:184
+msgid "Mostra i pulsanti di login anche nella parte pubblica"
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:173
+msgid "Normalmente, i pulsanti di login con SPID e CIE vengono visualizzati solo nella pagina di login di WordPress. Se si utilizza il tema Design Scuole Italia, è consigliabile abilitare questa opzione, in modo che i pulsanti di login vengano mostrati anche nella parte pubblica, nel pannello che appare facendo clic su \"Accedi\" nella barra superiore."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:179
+msgid "Nascondi il form di login del tema"
+msgstr ""
+
+#. translators: %s: Name of the cited option
+#: admin/R1EIDG_Settings.php:183
+msgid "Funziona solo se l'opzione \"%s\" è abilitata. Abilitando questa opzione, il form di login del tema Design Scuole Italia viene nascosto, permettendo di accedere solo con SPID o CIE."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:220
+msgid "Dopo aver effettuato l'aggregazione della scuola nel portale SIDI, inserisci qui i dati richiesti."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:232
+msgid "Se utilizzi il tema Design Scuole Italia, puoi usare queste impostazioni per integrare meglio il login con SPID e CIE al tema. Se invece non utilizzi tale tema, non attivare le seguenti impostazioni perché potrebbero comportare effetti indesiderati."
+msgstr ""
+
+#: admin/R1EIDG_Settings.php:244
+msgid "Gestisci le impostazioni generali"
+msgstr ""
+
+#: R1EIDG_GatewayURLs.php:29
+msgid "Configurazione accesso eID-Gateway incompleta"
+msgstr ""
+
+#: R1EIDG_LoginController.php:48
+msgid "Errore nella verifica del token"
+msgstr ""
+
+#: R1EIDG_LoginController.php:51
+msgid "Token non valido"
+msgstr ""
+
+#: R1EIDG_LoginController.php:58
+msgid "Codice fiscale non valido"
+msgstr ""
+
+#: R1EIDG_LoginController.php:70
+msgid "L'utente non è registrato."
+msgstr ""
+
+#: R1EIDG_UI.php:119
+msgid "Entra con SPID"
+msgstr ""
+
+#: R1EIDG_UI.php:123
+msgid "Entra con CIE"
+msgstr ""

@@ -55,7 +55,7 @@ class R1EIDG_LoginController
         $fiscal_number = strtoupper(trim($payload['fiscal_number'] ?? ''));
 
         if(!$fiscal_number)
-            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Codice non valido", 'wp-mim-eidgateway-connect'));
+            R1EIDG_LoginController::set_login_error_and_die(esc_html__("Codice fiscale non valido", 'wp-mim-eidgateway-connect'));
 
         // Search for users that have the received fiscal number
         $users = get_users(
