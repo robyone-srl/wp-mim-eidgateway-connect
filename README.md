@@ -9,7 +9,7 @@ Questo plugin non è ufficiale: è stato sviluppato da [Robyone S.r.l.](https://
 Il plugin non è ancora disponibile direttamente da WordPress, quindi per ora è necessario scaricarlo e installarlo manualmente.
 
 Per ottenere la cartella ZIP contenente il plugin da caricare in WordPress, puoi:
-- scaricare la release più recente, oppure
+- scaricare la [release più recente](https://github.com/robyone-srl/wp-mim-eidgateway-connect/releases/latest) (scegli il file chiamato `wp-mim-eidgateway-connect.zip`), oppure
 - scaricare la repository e comprimere il contenuto della cartella `trunk` in una cartella compressa chiamata `wp-mim-eidgateway-connect.zip` (solo il contenuto, non la cartella).
 
 Per eseguire l'installazione:
@@ -28,15 +28,13 @@ Di seguito sono descritti i passaggi per integrare l'accesso tramite eID-Gateway
 
 ### Aggregazione al Gateway delle Identità
 
-Per utilizzare il plugin, è necessario che la scuola abbia completato con successo la *richiesta di aggregazione* al [Gateway delle Identità](https://www.istruzione.it/spid-cie/scuole.html). Puoi effettuare questa procedura dal portale SIDI, nella sezione "Gestione aggregazione scuola" (possono accedervi il dirigente scolastico e il DSGA). La guida completa si trova [a questa pagina](https://www.istruzione.it/responsabile-transizione-digitale/scuole.html), sotto la sezione "Manuale utente per l’adesione al Gateway delle Identità".
+Per utilizzare il plugin, è necessario che la scuola abbia completato con successo la richiesta di aggregazione al [Gateway delle Identità](https://www.istruzione.it/spid-cie/scuole.html). Puoi effettuare questa procedura dal portale SIDI, nella sezione "Gestione aggregazione scuola" (possono accedervi il dirigente scolastico e il DSGA). Puoi trovare guida completa [a questa pagina](https://www.istruzione.it/responsabile-transizione-digitale/scuole.html), sotto la sezione "Manuale utente per l'adesione al Gateway delle Identità".
 
-Sempre in "Gestione aggregazione scuola" del portale SIDI, nella scheda "Gestione client", si può ottenere un _Client ID_ da utilizzare nelle impostazioni del plugin. Il _redirect url_ da impostare è "https://<indirizzo del sito>/wp-json/eid-gateway/login".
-
-Una volta registrato il servizio, si ottiene un Client ID, da utilizzare della configurazione del plugin.
+Sempre in "Gestione aggregazione scuola" del portale SIDI, nella scheda "Gestione client", puoi ottenere il _Client ID_ da utilizzare nelle impostazioni del plugin. Il _redirect url_ da impostare è "https://_indirizzo del sito_/wp-json/eid-gateway/login".
 
 ### Registrazione dei codici fiscali
 
-Per ogni utente che desideri possa accedere con eID-Gateway, devi registrare il suo codice fiscale.
+Per ogni utente che desideri possa accedere con eID-Gateway, devi registrare il suo codice fiscale. Se in passato hai usato il plugin [WP Spid Italia](https://it.wordpress.org/plugins/wp-spid-italia/) e hai già registrato i codici fiscali per quel plugin, allora questa operazione non dovrebbe essere necessaria.
 
 Solo gli utenti che hanno il permesso di modificare gli utenti ("edit_users") possono modificare i codici fiscali.
 
@@ -46,13 +44,13 @@ Solo gli utenti che hanno il permesso di modificare gli utenti ("edit_users") po
 4. Salva.
 5. Ripeti dal punto 2 per ogni utente interessato.
 
-In alternativa, si possono usare plugin di importazione massiva. In questo caso, il _meta_field_ che contiene il codice fiscale è `codice_fiscale`.
+In alternativa, puoi usare plugin di importazione massiva. In questo caso, il _meta_field_ che contiene il codice fiscale è `codice_fiscale`.
 
 ### Configurazione del plugin
 
 Una volta inseriti i codici fiscali, configura il plugin:
 
-1. Apri la pagina delle impostazioni del plugin (tramite il collegamento "Impostazioni" sotto al nome del plugin nell'elenco dei plugin, o tramite la voce del menù laterale _"Impostazioni" > "eID-Gateway"_).
+1. Apri la pagina delle impostazioni del plugin (tramite il collegamento "Impostazioni" sotto al nome del plugin nell'elenco dei plugin, o tramite la voce del menù laterale _Impostazioni > eID-Gateway_).
 2. Inserisci il client ID (ottenuto durante la registrazione del servizio nel portale SIDI) e il codice meccanografico della scuola nei relativi campi.
 3. Abilita la spunta su "Abilita login con eID-Gateway".
 4. Salva con l'apposito pulsante.
@@ -63,7 +61,7 @@ Gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare
 
 #### Design Scuole Italia
 
-Se utilizzi il tema fornito da AgID per le scuole, [Design Scuole Italia](https://github.com/italia/design-scuole-wordpress-theme), puoi utilizzare le opzioni sotto "Integrazione con il tema Design Scuole Italia" (sempre nella pagina delle impostazioni del plugin) per mostrare i pulsanti di login con SPID e CIE anche nel pannello di login del tema, e per nascondere i campi per il login con email e password.
+Se utilizzi il tema fornito da AgID per le scuole, [Design Scuole Italia](https://github.com/italia/design-scuole-wordpress-theme), puoi utilizzare le opzioni sotto "Integrazione con il tema Design Scuole Italia" (nella pagina delle impostazioni del plugin) per mostrare i pulsanti di login con SPID e CIE anche nel pannello di login del tema, e per nascondere i campi per il login con email e password.
 
 #### Altri temi
 
