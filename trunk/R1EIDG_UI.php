@@ -21,7 +21,6 @@ class R1EIDG_UI
         add_shortcode('eid_gateway_buttons', [get_class(), 'draw_login_button_from_shortcode_callback']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
 
-        // TODO: option to show login buttons
         if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php' && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC)) {
             // A JavaScript script will position the buttons in the rigt place
             echo do_shortcode('[eid_gateway_buttons]');
