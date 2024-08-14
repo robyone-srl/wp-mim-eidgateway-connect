@@ -24,7 +24,7 @@ Per eseguire l'installazione:
 
 ## Utilizzo
 
-Di seguito sono descritti i passaggi per integrare l'accesso tramite eID-Gateway al sito scolastico.
+Di seguito sono descritti i passaggi per integrare l'accesso tramite eID-Gateway al sito scolastico realizzato in WordPress.
 
 ### Aggregazione al Gateway delle Identità
 
