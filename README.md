@@ -59,6 +59,8 @@ Gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare
 
 ### Integrazione con il tema
 
+Puoi fare in modo che il plugin mostri i pulsanti di accesso anche al di fuori della pagina di login di WordPress.
+
 #### Design Scuole Italia
 
 Se utilizzi il tema fornito da AgID per le scuole, [Design Scuole Italia](https://github.com/italia/design-scuole-wordpress-theme), puoi utilizzare le opzioni sotto "Integrazione con il tema Design Scuole Italia" (nella pagina delle impostazioni del plugin) per mostrare i pulsanti di login con SPID e CIE anche nel pannello di login del tema, e per nascondere i campi per il login con email e password.
