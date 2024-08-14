@@ -17,13 +17,13 @@ class R1EIDG_UI
      */
     static function init()
     {
-        add_action('login_form', [get_class(), 'draw_login_button_callback']);
+        add_action('login_form', [get_class(), 'draw_login_button_from_login_form_callback']);
         add_shortcode('eid_gateway_buttons', [get_class(), 'draw_login_button_from_shortcode_callback']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
 
         if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php' && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC)) {
             // A JavaScript script will position the buttons in the rigt place
-            echo do_shortcode('[eid_gateway_buttons]');
+            R1EIDG_UI::draw_login_button(originates_from_plugin: true);
         }
     }
 
@@ -55,19 +55,31 @@ class R1EIDG_UI
             'redirect_to' => null,
         ], $atts);
 
-        R1EIDG_UI::draw_login_button_callback($atts['size'], $atts['redirect_to']);
+        R1EIDG_UI::draw_login_button($atts['size'], $atts['redirect_to']);
     }
 
     /**
-     * Draws the "Entra con SPID" and "Entra con CIE" buttons. Checks if the option to login with eID-Gateway is enabled.
+     * Callback for the "login_form" action.
+     */
+    static function draw_login_button_from_login_form_callback()
+    {
+        R1EIDG_UI::draw_login_button();
+    }
+
+    /**
+     * Draws the "Login with SPID" and "Login with CIE" buttons. Checks if the option to login with eID-Gateway is enabled and if the user is not already logged.
      * 
      * @param string $size Buttons size. Can be any of R1EIDG_UI::BUTTON_SIZE_*
      * @param string $redirect_to Where to redirect the user after login. If not set, user will be redirected to the admin page.
+     * @param bool $originates_from_plugin Indicates if the buttons were drawn by the plugin or from a shortcode.
      */
-    static function draw_login_button_callback($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null)
+    static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null, $originates_from_plugin = false)
     {
         $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
         if (!$eid_enabled)
+            return;
+
+        if(is_user_logged_in())
             return;
 
         $size = $size ?: R1EIDG_UI::BUTTON_SIZE_M;
@@ -111,7 +123,7 @@ class R1EIDG_UI
             R1EIDG_VERSION
         );
 ?>
-        <div class="R1EIDG-wrapper" style="display: none;" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
+        <div class="R1EIDG-wrapper <?= $originates_from_plugin ? 'from-R1EIDG' : '' ?>" style="display: none;" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
 
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>
