@@ -2,7 +2,7 @@
 
 Questa repository contiene il codice e gli asset per la [directory dei plugin di WordPress](https://it.wordpress.org/plugins/) del plugin "Login con eID-Gateway", che permette di effettuare il login ai siti di WordPress con [eID-Gateway](https://www.istruzione.it/spid-cie/), il sistema che si interfaccia a SPID, CIE e eIDAS messo a disposizione dal Ministero dell'Istruzione e del Merito.
 
-Questo plugin non è ufficiale, ma è stato sviluppato da [Robyone S.r.l.](https://robyone.net/) per permettere alle scuole con cui collabora di effettuare il login al sito scolastico con SPID e CIE.
+Questo plugin non è ufficiale: è stato sviluppato da [Robyone S.r.l.](https://robyone.net/) per permettere alle scuole con cui collabora di effettuare il login al sito scolastico con SPID e CIE.
 
 ## Installazione
 
