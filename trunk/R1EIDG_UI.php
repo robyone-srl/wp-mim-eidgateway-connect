@@ -63,7 +63,7 @@ class R1EIDG_UI
      */
     static function draw_login_button_from_login_form_callback()
     {
-        R1EIDG_UI::draw_login_button();
+        R1EIDG_UI::draw_login_button(originates_from_plugin: true);
     }
 
     /**
@@ -123,7 +123,7 @@ class R1EIDG_UI
             R1EIDG_VERSION
         );
 ?>
-        <div class="R1EIDG-wrapper <?= $originates_from_plugin ? 'from-R1EIDG' : '' ?>" style="display: none;" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
+        <div class="R1EIDG-wrapper<?= $originates_from_plugin ? ' from-R1EIDG' : '' ?>" style="<?= $originates_from_plugin ? 'display: none;' : '' ?>" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
 
             <a href="<?= $start_login_url ?>" class="italia-it-button italia-it-button-size-<?= $size ?> button-spid" spid-idp-button="#spid-idp-button-medium-get">
                 <span class="italia-it-button-icon"><img alt="" src="<?= plugins_url('public/img/spid-ico-circle-bb.svg', __FILE__) ?>" /></span>

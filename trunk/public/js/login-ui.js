@@ -1,7 +1,7 @@
 /* This script places the buttons in the right prace of the login form. */
 
 jQuery(document).on("ready", function () {
-    let eid_wrapper = jQuery(".R1EIDG-wrapper .from-R1EIDG");   // Searches for the login buttons drawn by the plugin.
+    let eid_wrapper = jQuery(".R1EIDG-wrapper.from-R1EIDG");   // Searches for the login buttons drawn by the plugin.
                                                                 // The class "from-R1EIDG" specifies that the buttons were not drawn from a shortcode, but by the plugin itself.
 
     let italia_login_form = jQuery(".access-login-form"); // login form of the https://github.com/italia/design-scuole-wordpress-theme theme
