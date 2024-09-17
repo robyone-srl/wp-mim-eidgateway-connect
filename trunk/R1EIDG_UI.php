@@ -17,12 +17,36 @@ class R1EIDG_UI
      */
     static function init()
     {
-        add_action('login_form', [get_class(), 'draw_login_button_from_login_form_callback']);
         add_shortcode('eid_gateway_buttons', [get_class(), 'draw_login_button_from_shortcode_callback']);
+
+        $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
+        if (!$eid_enabled)
+            return;
+
+        if(is_user_logged_in())
+            return;
+
+        add_action('login_form', [get_class(), 'draw_login_button_from_login_form_callback']);
         add_filter('wp_login_errors', [get_class(), 'print_login_errors_callback']);
 
-        if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php' && R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC)) {
-            // A JavaScript script will position the buttons in the rigt place
+        if (R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_SHOW_IN_PUBLIC)) {
+            add_action('wp_footer', [get_class(), 'wp_footer_callback']);
+        }
+
+        wp_enqueue_script(
+            'R1EIDG_login_ui',
+            plugins_url('public/js/login-ui.js', __FILE__),
+            ['jquery'],
+            R1EIDG_VERSION
+        );
+    }
+
+    /**
+     * Callback for wp_footer, to draw the buttons in the page body.
+     */
+    static function wp_footer_callback(){
+        if (!is_admin() && $GLOBALS['pagenow'] !== 'wp-login.php') {
+            // A JavaScript script will position the buttons in the right place
             R1EIDG_UI::draw_login_button(originates_from_plugin: true);
         }
     }
@@ -50,6 +74,13 @@ class R1EIDG_UI
      */
     static function draw_login_button_from_shortcode_callback($atts)
     {
+        $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
+        if (!$eid_enabled)
+            return;
+
+        if(is_user_logged_in())
+            return;
+
         $atts = shortcode_atts([
             'size' => R1EIDG_UI::BUTTON_SIZE_M,
             'redirect_to' => null,
@@ -75,12 +106,19 @@ class R1EIDG_UI
      */
     static function draw_login_button($size = R1EIDG_UI::BUTTON_SIZE_M, $redirect_to = null, $originates_from_plugin = false)
     {
-        $eid_enabled = R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_EID_ENABLED);
-        if (!$eid_enabled)
-            return;
+        wp_enqueue_style(
+            'R1EIDG_spid_button',
+            plugins_url('public/css/spid-sp-access-button.min.css', __FILE__),
+            [],
+            R1EIDG_VERSION
+        );
 
-        if(is_user_logged_in())
-            return;
+        wp_enqueue_style(
+            'R1EIDG_login_ui',
+            plugins_url('public/css/login-ui.css', __FILE__),
+            [],
+            R1EIDG_VERSION
+        );
 
         $size = $size ?: R1EIDG_UI::BUTTON_SIZE_M;
         $size = trim(strtolower($size));
@@ -101,27 +139,6 @@ class R1EIDG_UI
             ]);
             $start_login_url .= '?' . $query;
         }
-
-        wp_enqueue_style(
-            'R1EIDG_spid_button',
-            plugins_url('public/css/spid-sp-access-button.min.css', __FILE__),
-            [],
-            R1EIDG_VERSION
-        );
-
-        wp_enqueue_script(
-            'R1EIDG_login_ui',
-            plugins_url('public/js/login-ui.js', __FILE__),
-            ['jquery'],
-            R1EIDG_VERSION
-        );
-
-        wp_enqueue_style(
-            'R1EIDG_login_ui',
-            plugins_url('public/css/login-ui.css', __FILE__),
-            [],
-            R1EIDG_VERSION
-        );
 ?>
         <div class="R1EIDG-wrapper<?= $originates_from_plugin ? ' from-R1EIDG' : '' ?>" style="<?= $originates_from_plugin ? 'display: none;' : '' ?>" data-hide-login="<?= (bool)R1EIDG_Settings::is_setting_enabled(R1EIDG_Settings::SETTING_SCHOOL_THEME_HIDE_LOGIN_FORM) ?>">
 

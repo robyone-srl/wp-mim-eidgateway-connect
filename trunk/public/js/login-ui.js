@@ -1,4 +1,4 @@
-/* This script places the buttons in the right prace of the login form. */
+/* This script places the buttons in the right place of the login form. */
 
 jQuery(document).on("ready", function () {
     let eid_wrapper = jQuery(".R1EIDG-wrapper.from-R1EIDG");   // Searches for the login buttons drawn by the plugin.
