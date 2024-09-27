@@ -14,13 +14,13 @@ Per ottenere la cartella ZIP contenente il plugin da caricare in WordPress, puoi
 
 Per eseguire l'installazione:
 1. apri il pannello amministratore;
-2. recati nella sezione dei plugin dalla barra a sinistra;
-3. premi su "Aggiungi nuovo plugin";
-4. premi su "Carica plugin";
-5. carica la cartella compressa ottenuta prima, trascinandola nell'area di caricamento o scegliendola manualmente;
-6. conferma l'installazione;
-7. attiva il plugin;
-8. segui i passaggi successivi per la configurazione.
+1. recati nella sezione dei plugin dalla barra a sinistra;
+1. premi su "Aggiungi nuovo plugin";
+1. premi su "Carica plugin";
+1. carica la cartella compressa ottenuta prima, trascinandola nell'area di caricamento o scegliendola manualmente;
+1. conferma l'installazione;
+1. attiva il plugin;
+1. segui i passaggi successivi per la configurazione.
 
 ## Utilizzo
 
@@ -39,10 +39,10 @@ Per ogni utente che desideri possa accedere con eID-Gateway, devi registrare il 
 Solo gli utenti che hanno il permesso di modificare gli utenti ("edit_users") possono modificare i codici fiscali.
 
 1. Accedi all'elenco degli utenti attraverso il menù laterale alla voce "Utenti" oppure "Utenti/Persone".
-2. Apri la pagina del profilo dell'utente interessato.
-3. Inserisci il suo codice fiscale nel relativo campo.
-4. Salva.
-5. Ripeti dal punto 2 per ogni utente interessato.
+1. Apri la pagina del profilo dell'utente interessato.
+1. Inserisci il suo codice fiscale nel relativo campo.
+1. Salva.
+1. Ripeti dal punto 2 per ogni utente interessato.
 
 In alternativa, puoi usare plugin di importazione massiva. In questo caso, il _meta_field_ che contiene il codice fiscale è `codice_fiscale`.
 
@@ -51,9 +51,9 @@ In alternativa, puoi usare plugin di importazione massiva. In questo caso, il _m
 Una volta inseriti i codici fiscali, configura il plugin:
 
 1. Apri la pagina delle impostazioni del plugin (tramite il collegamento "Impostazioni" sotto al nome del plugin nell'elenco dei plugin, o tramite la voce del menù laterale _Impostazioni > eID-Gateway_).
-2. Inserisci il client ID (ottenuto durante la registrazione del servizio nel portale SIDI) e il codice meccanografico della scuola nei relativi campi.
-3. Abilita la spunta su "Abilita login con eID-Gateway".
-4. Salva con l'apposito pulsante.
+1. Inserisci il client ID (ottenuto durante la registrazione del servizio nel portale SIDI) e il codice meccanografico della scuola nei relativi campi.
+1. Abilita la spunta su "Abilita login con eID-Gateway".
+1. Salva con l'apposito pulsante.
 
 Gli utenti per cui è stato impostato il codice fiscale riusciranno a effettuare l'accesso con SPID, CIE o eIDAS. I pulsanti "Entra con SPID" e "Entra con CIE" appariranno sotto al form di login di WordPress (in `/wp-login.php`).
 
